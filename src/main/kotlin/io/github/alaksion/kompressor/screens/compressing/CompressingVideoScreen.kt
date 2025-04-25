@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.screens
+package io.github.alaksion.kompressor.screens.compressing
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
