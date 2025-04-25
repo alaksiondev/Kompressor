@@ -3,8 +3,7 @@ package io.github.alaksion.kompressor.compressor
 import io.github.alaksion.kompressor.params.Codecs
 import io.github.alaksion.kompressor.params.Presets
 import io.github.alaksion.kompressor.params.Resolution
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import java.io.IOException
 import kotlin.io.path.Path
 
 internal class FfmpegVideoCompressor : VideoCompressor {
@@ -21,24 +20,33 @@ internal class FfmpegVideoCompressor : VideoCompressor {
 
         val scriptPath = Path("").toAbsolutePath().toString() + "/python/video_compressor.py"
 
-        val processBuilder = ProcessBuilder(
+        val process = ProcessBuilder(
+            "python3",
             scriptPath,
             inputPath,
             outputPath,
-            "--code ${codecs.id}",
-            "--crf $crf",
-            "--preset ${presets.id}",
-            "--scale ${resolution.width}:${resolution.height}"
-        ).start()
+            "--codec", codecs.id,
+            "--crf", crf.toString(),
+            "--preset", presets.id,
+            "--scale", "${resolution.width}:${resolution.height}"
+        ).redirectErrorStream(true).start()
 
-        val stream = BufferedReader(InputStreamReader(processBuilder.inputStream))
+        // Read output to prevent buffer filling and deadlocks
+        val output = process.inputStream.bufferedReader().use { it.readText() }
+        val errorOutput = process.errorStream.bufferedReader().use { it.readText() }
 
-        var line: String?
-        while (stream.readLine().also { line = it } != null) {
-            println(line)
+        val exitCode = process.waitFor()
+
+        if (exitCode != 0) {
+            throw IOException(
+                """
+                Python script failed with exit code $exitCode
+                Output: $output
+                Error: $errorOutput
+            """.trimIndent()
+            )
         }
 
-        processBuilder.waitFor()
-        processBuilder.exitValue()
+        println("Compression successful. Output: $output")
     }
 }
