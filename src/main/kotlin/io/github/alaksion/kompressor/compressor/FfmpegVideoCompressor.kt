@@ -3,6 +3,8 @@ package io.github.alaksion.kompressor.compressor
 import io.github.alaksion.kompressor.params.Codecs
 import io.github.alaksion.kompressor.params.Presets
 import io.github.alaksion.kompressor.params.Resolution
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import kotlin.io.path.Path
 
@@ -31,22 +33,32 @@ internal class FfmpegVideoCompressor : VideoCompressor {
             "--scale", "${resolution.width}:${resolution.height}"
         ).redirectErrorStream(true).start()
 
-        // Read output to prevent buffer filling and deadlocks
-        val output = process.inputStream.bufferedReader().use { it.readText() }
-        val errorOutput = process.errorStream.bufferedReader().use { it.readText() }
+        withContext(Dispatchers.IO) {
+            process.inputStream.bufferedReader().use { reader ->
+                reader.lineSequence().forEach { line ->
+                    println("STDOUT: $line") // Print each line in real-time
+                }
+            }
+        }
+
+        withContext(Dispatchers.IO) {
+            process.errorStream.bufferedReader().use { reader ->
+                reader.lineSequence().forEach { line ->
+                    System.err.println("STDERR: $line") // Print each error line in real-time
+                }
+            }
+        }
 
         val exitCode = process.waitFor()
 
         if (exitCode != 0) {
             throw IOException(
                 """
-                Python script failed with exit code $exitCode
-                Output: $output
-                Error: $errorOutput
+                Python script failed with exit code $exitCode         
             """.trimIndent()
             )
         }
 
-        println("Compression successful. Output: $output")
+        println("Compression successful")
     }
 }
