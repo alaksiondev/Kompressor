@@ -1,0 +1,12 @@
+[versions]
+compose = "1.7.3"
+kotlin = "2.1.0"
+
+[libraries]
+
+[plugins]
+jetbrains-kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+jetbrains-compose-core = { id = "org.jetbrains.compose", version.ref = "compose" }
+jetbrains-compose-kotlin = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+[bundles]
