@@ -10,23 +10,18 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.draganddrop.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.github.alaksion.kompressor.configs.SupportedFiles
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_continue_cta
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_title
+import io.github.alaksion.kompressor.presentation.screens.selectfile.components.openFileBrowser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import java.awt.FileDialog
-import java.awt.datatransfer.DataFlavor
-import java.io.File
-import java.io.FilenameFilter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -71,7 +66,7 @@ internal fun SelectFileScreen() {
         ) {
             Button(
                 onClick = {
-                    val file = openFileChooser(window)
+                    val file = openFileBrowser(window)
                     file?.let {
                         selectedFiles = it.name
                     }
@@ -107,88 +102,4 @@ internal fun SelectFileScreen() {
             }
         }
     }
-}
-
-private fun openFileChooser(
-    window: ComposeWindow
-): File? {
-    val chooser = FileDialog(window).apply {
-        title = "Select file"
-        mode = FileDialog.LOAD
-        isMultipleMode = false
-        filenameFilter = FilenameFilter { _, name ->
-            val extensionAllowList = SupportedFiles.entries.map { it.extension }
-
-            extensionAllowList.any { extension ->
-                name.endsWith(extension, ignoreCase = true)
-            }
-        }
-    }
-
-    chooser.isVisible = true
-
-    return chooser.files.firstOrNull()
-}
-
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun rememberDropTarget(
-    onStartDrop: () -> Unit,
-    onEndDrop: () -> Unit,
-    onDropResult: (FileData) -> Unit,
-    onDropFailure: (DropFailure) -> Unit,
-): DragAndDropTarget {
-
-    return remember {
-        object : DragAndDropTarget {
-
-            override fun onStarted(event: DragAndDropEvent) {
-                onStartDrop()
-            }
-
-            override fun onEnded(event: DragAndDropEvent) {
-                onEndDrop()
-            }
-
-            override fun onDrop(event: DragAndDropEvent): Boolean {
-                println("Action at the target: ${event.action}")
-
-                val transferable = event.awtTransferable
-
-                val fileList = event.dragData() as DragData.FilesList
-                val aa = fileList.readFiles().joinToString { "" }
-                onDropResult(
-                    FileData(
-                        path = aa,
-                        name = aa
-                    )
-                )
-
-                if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    @Suppress("UNCHECKED_CAST")
-                    val fileList = transferable.getTransferData(DataFlavor.stringFlavor) as String
-                    val file = fileList
-
-                    onDropResult(
-                        FileData(
-                            path = aa,
-                            name = aa
-                        )
-                    )
-                }
-                return true
-            }
-        }
-    }
-}
-
-data class FileData(
-    val path: String,
-    val name: String,
-)
-
-enum class DropFailure {
-    UnsupportedFileType,
-    FileTooLarge,
 }
