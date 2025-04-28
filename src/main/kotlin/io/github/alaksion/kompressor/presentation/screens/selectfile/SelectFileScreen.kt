@@ -13,13 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
-import androidx.compose.ui.draganddrop.DragAndDropEvent
-import androidx.compose.ui.draganddrop.DragAndDropTarget
-import androidx.compose.ui.draganddrop.DragData
-import androidx.compose.ui.draganddrop.awtTransferable
-import androidx.compose.ui.draganddrop.dragData
+import androidx.compose.ui.draganddrop.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.github.alaksion.kompressor.configs.SupportedFiles
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_continue_cta
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_title
@@ -29,6 +26,7 @@ import org.jetbrains.compose.resources.stringResource
 import java.awt.FileDialog
 import java.awt.datatransfer.DataFlavor
 import java.io.File
+import java.io.FilenameFilter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -118,6 +116,13 @@ private fun openFileChooser(
         title = "Select file"
         mode = FileDialog.LOAD
         isMultipleMode = false
+        filenameFilter = FilenameFilter { _, name ->
+            val extensionAllowList = SupportedFiles.entries.map { it.extension }
+
+            extensionAllowList.any { extension ->
+                name.endsWith(extension, ignoreCase = true)
+            }
+        }
     }
 
     chooser.isVisible = true
