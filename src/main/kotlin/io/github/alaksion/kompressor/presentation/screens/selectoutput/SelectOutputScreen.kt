@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.kompressor.generated.resources.*
+import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.components.CompressionFlow
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.components.CompressionOptions
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.components.openDirectoryBrowser
@@ -73,6 +74,14 @@ internal fun SelectOutputScreen(
                         )
                     }
                 },
+            )
+        },
+        bottomBar = {
+            Footer(
+                label = stringResource(buttonTextResource.value),
+                isActive = outputPath.value.orEmpty().isNotBlank(),
+                onClick = {
+                }
             )
         }
     ) {
@@ -145,23 +154,6 @@ internal fun SelectOutputScreen(
                 currentFlow = compressionFlow.value,
                 onFlowChanged = { compressionFlow.value = it }
             )
-
-            Spacer(Modifier.height(16.dp))
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(0.80f)
-                    .height(64.dp),
-                onClick = {
-
-                },
-                enabled = outputPath.value.orEmpty().isNotBlank(),
-                shape = MaterialTheme.shapes.large
-            ) {
-                Text(
-                    text = stringResource(buttonTextResource.value),
-                )
-            }
         }
     }
 }

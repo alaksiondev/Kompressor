@@ -2,7 +2,9 @@ package io.github.alaksion.kompressor.presentation.screens.selectfile
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_continue_cta
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_title
+import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.FilePickerBox
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.FilePickerBoxState
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.openFileBrowser
@@ -46,6 +49,15 @@ internal fun SelectFileScreen(
                     text = stringResource(Res.string.select_file_title),
                 )
             }
+        },
+        bottomBar = {
+            Footer(
+                label = stringResource(Res.string.select_file_continue_cta),
+                isActive = selectedFilePath.value.isNotBlank(),
+                onClick = {
+                    onNavigateToSelectOutput(selectedFilePath.value)
+                }
+            )
         }
     ) {
         Column(
@@ -74,19 +86,6 @@ internal fun SelectFileScreen(
             )
 
             Spacer(Modifier.height(16.dp))
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(0.80f)
-                    .height(64.dp),
-                onClick = { onNavigateToSelectOutput(selectedFilePath.value) },
-                enabled = selectedFilePath.value.isNotBlank(),
-                shape = MaterialTheme.shapes.large
-            ) {
-                Text(
-                    text = stringResource(Res.string.select_file_continue_cta),
-                )
-            }
         }
     }
 }
