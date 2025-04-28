@@ -84,9 +84,11 @@ internal fun SelectOutputScreen(
                 }
             )
         }
-    ) {
+    ) { scaffoldPadding ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(scaffoldPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

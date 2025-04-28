@@ -1,5 +1,6 @@
 package io.github.alaksion.kompressor.presentation.screens.selectfile
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
@@ -20,6 +21,7 @@ import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.FilePickerBox
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.FilePickerBoxState
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.openFileBrowser
+import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -59,9 +61,11 @@ internal fun SelectFileScreen(
                 }
             )
         }
-    ) {
+    ) { scaffoldPadding ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(scaffoldPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -84,8 +88,6 @@ internal fun SelectFileScreen(
                     pickerState.value = FilePickerBoxState.Unselected
                 }
             )
-
-            Spacer(Modifier.height(16.dp))
         }
     }
 }
@@ -101,4 +103,12 @@ fun formatFileSize(sizeInBytes: Long): String {
     }
 
     return String.format("%.2f %s", size, units[unitIndex])
+}
+
+@Composable
+@Preview
+private fun Preview() {
+    KompressorTheme {
+        SelectFileScreen { }
+    }
 }
