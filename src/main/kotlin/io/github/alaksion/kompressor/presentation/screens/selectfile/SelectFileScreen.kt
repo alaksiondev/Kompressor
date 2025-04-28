@@ -1,18 +1,28 @@
 package io.github.alaksion.kompressor.presentation.screens.selectfile
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.awt.ComposeWindow
-import androidx.compose.ui.window.WindowScope
-import java.awt.FileDialog
+import androidx.compose.ui.text.font.FontFamily
 
 @Composable
-internal fun WindowScope.SelectFileScreen() {
+internal fun SelectFileScreen() {
     Scaffold {
-        val dialog = FileDialog(
-            window as ComposeWindow,
-            "Select a file",
-            FileDialog.LOAD
-        )
+        Column {
+            Text(
+                text = "Inter",
+                fontStyle = MaterialTheme.typography.h1.fontStyle
+            )
+
+            Text(
+                text = "Other",
+                fontStyle = MaterialTheme.typography.h1.copy(
+                    fontFamily = FontFamily.Cursive
+                ).fontStyle
+            )
+        }
+
     }
 }
