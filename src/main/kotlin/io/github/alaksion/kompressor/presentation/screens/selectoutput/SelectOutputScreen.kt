@@ -1,6 +1,8 @@
 package io.github.alaksion.kompressor.presentation.screens.selectoutput
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
@@ -60,6 +62,8 @@ internal fun SelectOutputScreen(
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -88,7 +92,8 @@ internal fun SelectOutputScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(scaffoldPadding),
+                .padding(scaffoldPadding)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -109,7 +114,6 @@ internal fun SelectOutputScreen(
                         text = stringResource(Res.string.select_output_input_label)
                     )
                 },
-                maxLines = 1,
             )
 
             Spacer(Modifier.height(32.dp))
