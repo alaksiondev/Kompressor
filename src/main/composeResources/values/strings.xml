@@ -11,4 +11,7 @@
 
     <!-- Select output -->
     <string name="select_output_title">Select file output</string>
+
+    <string name="select_output_input_label">Input file</string>
+    <string name="select_output_output_label">Output file</string>
 </resources>
