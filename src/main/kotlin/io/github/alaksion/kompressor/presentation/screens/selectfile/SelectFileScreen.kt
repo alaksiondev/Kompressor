@@ -15,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
+import androidx.compose.ui.draganddrop.DragData
 import androidx.compose.ui.draganddrop.awtTransferable
+import androidx.compose.ui.draganddrop.dragData
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
@@ -136,7 +138,6 @@ fun rememberDropTarget(
     return remember {
         object : DragAndDropTarget {
 
-            // Highlights the border of a potential drop target
             override fun onStarted(event: DragAndDropEvent) {
                 onStartDrop()
             }
@@ -150,20 +151,26 @@ fun rememberDropTarget(
 
                 val transferable = event.awtTransferable
 
+                val fileList = event.dragData() as DragData.FilesList
+                val aa = fileList.readFiles().joinToString { "" }
+                onDropResult(
+                    FileData(
+                        path = aa,
+                        name = aa
+                    )
+                )
+
                 if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     @Suppress("UNCHECKED_CAST")
-                    val fileList = transferable.getTransferData(DataFlavor.javaFileListFlavor) as List<File>
-                    val file = fileList.first()
+                    val fileList = transferable.getTransferData(DataFlavor.stringFlavor) as String
+                    val file = fileList
 
-                    when {
-                        file.extension !in listOf("mp4, mp3, webp") -> onDropFailure(DropFailure.UnsupportedFileType)
-                        else -> onDropResult(
-                            FileData(
-                                path = file.absolutePath,
-                                name = file.name
-                            )
+                    onDropResult(
+                        FileData(
+                            path = aa,
+                            name = aa
                         )
-                    }
+                    )
                 }
                 return true
             }
