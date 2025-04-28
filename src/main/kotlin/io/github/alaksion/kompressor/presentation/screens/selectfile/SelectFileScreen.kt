@@ -1,54 +1,28 @@
 package io.github.alaksion.kompressor.presentation.screens.selectfile
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.draganddrop.dragAndDropTarget
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
-import androidx.compose.ui.draganddrop.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_continue_cta
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_title
-import io.github.alaksion.kompressor.presentation.screens.selectfile.components.openFileBrowser
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import io.github.alaksion.kompressor.presentation.screens.selectfile.components.filepicker.FilePickerBox
+import io.github.alaksion.kompressor.presentation.screens.selectfile.components.filepicker.openFileBrowser
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SelectFileScreen() {
-    var selectedFiles by remember { mutableStateOf("") }
+    val selectedFilePath = remember { mutableStateOf("") }
     val window = remember { ComposeWindow() }
-    var dropZoneColor by remember { mutableStateOf(Color.Cyan) }
-    val scope = rememberCoroutineScope()
-
-    val dropTarget = rememberDropTarget(
-        onEndDrop = {
-            scope.launch {
-                delay(1000)
-                dropZoneColor = Color.Cyan
-            }
-        },
-        onStartDrop = {
-            dropZoneColor = Color.Yellow
-        },
-        onDropResult = { file ->
-            dropZoneColor = Color.Green
-            selectedFiles = file.name
-        },
-        onDropFailure = {
-            dropZoneColor = Color.Red
-        }
-    )
 
     Scaffold(
         topBar = {
@@ -64,37 +38,30 @@ internal fun SelectFileScreen() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(
-                onClick = {
-                    val file = openFileBrowser(window)
-                    file?.let {
-                        selectedFiles = it.name
-                    }
-
-                }
-            ) {
-                Text("Open chooser")
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .height(150.dp)
-                    .background(Color.Cyan)
-                    .dragAndDropTarget(
-                        shouldStartDragAndDrop = { true },
-                        target = dropTarget
+            FilePickerBox(
+                Modifier
+                    .fillMaxWidth(0.80f)
+                    .height(300.dp)
+                    .clickable(
+                        enabled = true,
+                        onClick = {
+                            val file = openFileBrowser(window)
+                            file?.let {
+                                selectedFilePath.value = it.absolutePath
+                            }
+                        }
                     )
             )
 
-            Text(
-                text = selectedFiles.ifEmpty { "Arquivo sem nome porra" },
-                modifier = Modifier.fillMaxWidth(0.8f)
-            )
+            Spacer(Modifier.height(16.dp))
 
             Button(
-                modifier = Modifier.fillMaxWidth(0.4f),
-                onClick = {}
+                modifier = Modifier
+                    .fillMaxWidth(0.80f)
+                    .height(64.dp),
+                onClick = {},
+                enabled = selectedFilePath.value.isNotBlank(),
+                shape = MaterialTheme.shapes.large
             ) {
                 Text(
                     text = stringResource(Res.string.select_file_continue_cta),

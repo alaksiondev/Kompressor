@@ -5,4 +5,7 @@
     <!-- Select file -->
     <string name="select_file_title">Select a file</string>
     <string name="select_file_continue_cta">Continue</string>
+    <string name="select_file_picker_upper_label">Drag &amp; drop file</string>
+    <string name="select_file_picker_bottom_label">or browse system files</string>
+    <string name="select_file_picker_formats">Supported formats: %1$s</string>
 </resources>

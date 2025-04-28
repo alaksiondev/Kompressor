@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.presentation.screens.selectfile.components
+package io.github.alaksion.kompressor.presentation.screens.selectfile.components.filepicker
 
 import androidx.compose.ui.awt.ComposeWindow
 import io.github.alaksion.kompressor.configs.SupportedFiles

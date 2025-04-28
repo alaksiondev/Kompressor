@@ -1,10 +1,13 @@
-package io.github.alaksion.kompressor.presentation.screens.selectfile.components
+package io.github.alaksion.kompressor.presentation.screens.selectfile.components.filepicker
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.draganddrop.*
+import androidx.compose.ui.draganddrop.DragAndDropEvent
+import androidx.compose.ui.draganddrop.DragAndDropTarget
+import androidx.compose.ui.draganddrop.awtTransferable
 import java.awt.datatransfer.DataFlavor
+import java.io.File
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -14,7 +17,6 @@ internal fun rememberDropTarget(
     onDropResult: (FileData) -> Unit,
     onDropFailure: (DropFailure) -> Unit,
 ): DragAndDropTarget {
-
     return remember {
         object : DragAndDropTarget {
 
@@ -31,24 +33,15 @@ internal fun rememberDropTarget(
 
                 val transferable = event.awtTransferable
 
-                val fileList = event.dragData() as DragData.FilesList
-                val aa = fileList.readFiles().joinToString { "" }
-                onDropResult(
-                    FileData(
-                        path = aa,
-                        name = aa
-                    )
-                )
-
                 if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     @Suppress("UNCHECKED_CAST")
-                    val fileList = transferable.getTransferData(DataFlavor.stringFlavor) as String
-                    val file = fileList
+                    val fileList = transferable.getTransferData(DataFlavor.javaFileListFlavor) as List<File>
+                    val file = fileList.first()
 
                     onDropResult(
                         FileData(
-                            path = aa,
-                            name = aa
+                            path = "teste",
+                            name = "teste"
                         )
                     )
                 }
