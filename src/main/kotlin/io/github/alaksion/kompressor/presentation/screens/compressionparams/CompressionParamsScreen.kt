@@ -22,6 +22,7 @@ import io.github.alaksion.kompressor.kompressor.generated.resources.compression_
 import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.ParamsCard
+import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.PresetCard
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
 
@@ -34,14 +35,6 @@ internal fun CompressionParamsScreen(
 ) {
     val fileFormat = remember(inputPath) {
         inputPath.substringAfterLast('.').uppercase()
-    }
-
-    val inputName = remember(inputPath) {
-        inputPath.substringAfterLast('/')
-    }
-
-    val outputName = remember(outputPath) {
-        outputPath.substringAfterLast('/')
     }
 
     val codec = remember { mutableStateOf(Codecs.Libx264) }
@@ -110,17 +103,11 @@ internal fun CompressionParamsScreen(
                     }
                 )
 
-                ParamsCard(
+                PresetCard(
                     modifier = Modifier.fillMaxWidth(),
-                    label = "Preset",
-                    content = {
-                        Text(
-                            text = preset.value.name
-                        )
-                    },
-                    onClick = {
-
-                    }
+                    preset = preset.value,
+                    onPresetChange = { preset.value = it },
+                    dropdownMenuState = remember { DropdownMenuState() }
                 )
 
                 ParamsCard(
