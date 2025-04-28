@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.presentation.screens.selectfile.components.filepicker
+package io.github.alaksion.kompressor.presentation.screens.selectfile.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
