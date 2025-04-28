@@ -2,16 +2,13 @@ package io.github.alaksion.kompressor.presentation.screens.selectoutput.componen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_output_compression_custom
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_output_compression_express
-import io.github.alaksion.kompressor.kompressor.generated.resources.select_output_compression_option_title
-import io.github.alaksion.kompressor.presentation.components.LabeledCheckbox
+import io.github.alaksion.kompressor.presentation.components.LabeledRadioButton
 import org.jetbrains.compose.resources.stringResource
 
 internal enum class CompressionFlow {
@@ -29,12 +26,7 @@ internal fun CompressionOptions(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            text = stringResource(Res.string.select_output_compression_option_title),
-            style = MaterialTheme.typography.h6
-        )
-
-        LabeledCheckbox(
+        LabeledRadioButton(
             label = stringResource(Res.string.select_output_compression_express),
             isChecked = currentFlow == CompressionFlow.Express,
             onCheckedChange = {
@@ -42,7 +34,7 @@ internal fun CompressionOptions(
             },
         )
 
-        LabeledCheckbox(
+        LabeledRadioButton(
             label = stringResource(Res.string.select_output_compression_custom),
             isChecked = currentFlow == CompressionFlow.Custom,
             onCheckedChange = {

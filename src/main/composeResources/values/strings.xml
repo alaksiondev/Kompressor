@@ -14,11 +14,8 @@
     <string name="select_output_input_label">Input file</string>
     <string name="select_output_output_label">Output file</string>
     <string name="select_output_compression_option_title">Compression options</string>
-    <string name="select_output_compression_express">Express: Use default parameters.Recommended for lightweight files
-    </string>
-    <string name="select_output_compression_custom">Custom: Configure compression parameters. Recommended for dense
-        files
-    </string>
+    <string name="select_output_compression_express">Express compression. Use default parameters</string>
+    <string name="select_output_compression_custom">Custom compression. Define parameters manually</string>
     <string name="select_output_express_cta">Start Compression</string>
     <string name="select_output_custom_cta">Continue</string>
 
