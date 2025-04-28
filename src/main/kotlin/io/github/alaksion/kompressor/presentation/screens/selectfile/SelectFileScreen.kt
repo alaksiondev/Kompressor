@@ -10,13 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_continue_cta
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_title
+import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.FilePickerBox
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.FilePickerBoxState
@@ -62,32 +62,33 @@ internal fun SelectFileScreen(
             )
         }
     ) { scaffoldPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(scaffoldPadding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+        ContentSurface(
+            modifier = Modifier.padding(scaffoldPadding)
         ) {
-            FilePickerBox(
-                state = pickerState.value,
-                modifier = Modifier
-                    .fillMaxWidth(0.80f)
-                    .height(300.dp),
-                onClick = {
-                    val file = openFileBrowser(window)
-                    file?.let { selectedFile ->
-                        pickerState.value = FilePickerBoxState.Selected(
-                            fileName = selectedFile.name,
-                            size = formatFileSize(selectedFile.length()),
-                            filePath = selectedFile.absolutePath
-                        )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                FilePickerBox(
+                    state = pickerState.value,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
+                    onClick = {
+                        val file = openFileBrowser(window)
+                        file?.let { selectedFile ->
+                            pickerState.value = FilePickerBoxState.Selected(
+                                fileName = selectedFile.name,
+                                size = formatFileSize(selectedFile.length()),
+                                filePath = selectedFile.absolutePath
+                            )
+                        }
+                    },
+                    onCancelFile = {
+                        pickerState.value = FilePickerBoxState.Unselected
                     }
-                },
-                onCancelFile = {
-                    pickerState.value = FilePickerBoxState.Unselected
-                }
-            )
+                )
+            }
         }
     }
 }

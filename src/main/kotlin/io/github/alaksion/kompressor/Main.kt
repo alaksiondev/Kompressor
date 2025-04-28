@@ -72,7 +72,8 @@ fun main() = application {
                         outputPath = route.outputPath,
                         onContinue = {
 
-                        }
+                        },
+                        onBack = { navigator.popBackStack() }
                     )
                 }
             }

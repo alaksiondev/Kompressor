@@ -13,10 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.kompressor.generated.resources.*
+import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.components.CompressionFlow
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.components.CompressionOptions
@@ -96,76 +96,79 @@ internal fun SelectOutputScreen(
             )
         }
     ) { scaffoldPadding ->
-        Column(
+        ContentSurface(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(scaffoldPadding)
-                .verticalScroll(scrollState),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.Center
+            ) {
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(0.80f),
-                value = inputPath,
-                onValueChange = {},
-                readOnly = true,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.FileUpload,
-                        contentDescription = null
-                    )
-                },
-                label = {
-                    Text(
-                        text = stringResource(Res.string.select_output_input_label)
-                    )
-                },
-            )
-
-            Spacer(Modifier.height(32.dp))
-
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(0.80f),
-                value = outputPath.value,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            openDirectoryBrowser(
-                                defaultDirectory = inputDirectory,
-                            )?.let {
-                                outputDirectory.value = it
-                            }
-                        }
-                    ) {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = inputPath,
+                    onValueChange = {},
+                    readOnly = true,
+                    leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.FileOpen,
+                            imageVector = Icons.Default.FileUpload,
                             contentDescription = null
                         )
-                    }
-                },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.FileDownload,
-                        contentDescription = null
-                    )
-                },
-                label = {
-                    Text(
-                        text = stringResource(Res.string.select_output_output_label)
-                    )
-                },
-            )
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(Res.string.select_output_input_label)
+                        )
+                    },
+                )
 
-            Spacer(Modifier.height(32.dp))
+                Spacer(Modifier.height(32.dp))
 
-            CompressionOptions(
-                modifier = Modifier.fillMaxWidth(0.80f),
-                currentFlow = compressionFlow.value,
-                onFlowChanged = { compressionFlow.value = it }
-            )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = outputPath.value,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = {
+                        IconButton(
+                            onClick = {
+                                openDirectoryBrowser(
+                                    defaultDirectory = inputDirectory,
+                                )?.let {
+                                    outputDirectory.value = it
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.FileOpen,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.FileDownload,
+                            contentDescription = null
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(Res.string.select_output_output_label)
+                        )
+                    },
+                )
+
+                Spacer(Modifier.height(32.dp))
+
+                CompressionOptions(
+                    modifier = Modifier.fillMaxWidth(),
+                    currentFlow = compressionFlow.value,
+                    onFlowChanged = { compressionFlow.value = it }
+                )
+            }
         }
     }
 }
