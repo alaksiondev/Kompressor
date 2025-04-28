@@ -10,6 +10,7 @@ import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.app_name
 import io.github.alaksion.kompressor.presentation.navigation.Screens
 import io.github.alaksion.kompressor.presentation.screens.compressing.ProcessingVideoScreen
+import io.github.alaksion.kompressor.presentation.screens.compressionparams.CompressionParamsScreen
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileScreen
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputScreen
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
@@ -44,7 +45,34 @@ fun main() = application {
                     val route = it.toRoute<Screens.SelectOutput>()
                     SelectOutputScreen(
                         inputPath = route.inputPath,
-                        onClick = { navigator.popBackStack() }
+                        onExpressClick = { inputPath, outputPath ->
+                            navigator.navigate(
+                                Screens.Params(
+                                    outputPath = outputPath,
+                                    inputPath = inputPath
+                                )
+                            )
+                        },
+                        onCustomClick = { inputPath, outputPath ->
+                            navigator.navigate(
+                                Screens.Params(
+                                    outputPath = outputPath,
+                                    inputPath = inputPath
+                                )
+                            )
+                        },
+                        onBack = { navigator.popBackStack() }
+                    )
+                }
+
+                composable<Screens.Params> {
+                    val route = it.toRoute<Screens.Params>()
+                    CompressionParamsScreen(
+                        inputPath = route.inputPath,
+                        outputPath = route.outputPath,
+                        onContinue = {
+
+                        }
                     )
                 }
             }

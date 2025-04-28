@@ -12,5 +12,11 @@ sealed interface Screens {
     ) : Screens
 
     @Serializable
+    data class Params(
+        val inputPath: String,
+        val outputPath: String
+    )
+
+    @Serializable
     object ProcessingFile : Screens
 }

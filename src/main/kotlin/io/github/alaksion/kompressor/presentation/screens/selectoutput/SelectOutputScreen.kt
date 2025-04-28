@@ -26,7 +26,9 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 internal fun SelectOutputScreen(
     inputPath: String,
-    onClick: () -> Unit,
+    onBack: () -> Unit,
+    onExpressClick: (String, String) -> Unit,
+    onCustomClick: (String, String) -> Unit
 ) {
     val inputDirectory = remember(inputPath) {
         inputPath.substringBeforeLast("/")
@@ -57,7 +59,7 @@ internal fun SelectOutputScreen(
                 val outputFileName = inputNameSplit[0] + "_compressed" + ".${inputNameSplit[1]}"
                 "${outputDirectory.value}/${outputFileName}"
             } else {
-                null
+                ""
             }
         }
     }
@@ -70,7 +72,7 @@ internal fun SelectOutputScreen(
                 title = { Text(stringResource(Res.string.select_output_title)) },
                 navigationIcon = {
                     IconButton(
-                        onClick = onClick
+                        onClick = onBack
                     ) {
                         Icon(
                             imageVector = Icons.Default.ChevronLeft,
@@ -83,8 +85,13 @@ internal fun SelectOutputScreen(
         bottomBar = {
             Footer(
                 label = stringResource(buttonTextResource.value),
-                isActive = outputPath.value.orEmpty().isNotBlank(),
+                isActive = outputPath.value.isNotBlank(),
                 onClick = {
+                    if (compressionFlow.value == CompressionFlow.Express) {
+                        onExpressClick(inputPath, outputPath.value)
+                    } else {
+                        onCustomClick(inputPath, outputPath.value)
+                    }
                 }
             )
         }
@@ -120,7 +127,7 @@ internal fun SelectOutputScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(0.80f),
-                value = outputPath.value.orEmpty(),
+                value = outputPath.value,
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = {
@@ -150,7 +157,6 @@ internal fun SelectOutputScreen(
                         text = stringResource(Res.string.select_output_output_label)
                     )
                 },
-                maxLines = 1,
             )
 
             Spacer(Modifier.height(32.dp))
