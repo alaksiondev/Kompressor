@@ -20,7 +20,9 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun SelectFileScreen() {
+internal fun SelectFileScreen(
+    onNavigateToSelectOutput: (String) -> Unit,
+) {
     val selectedFilePath = remember { mutableStateOf("") }
     val window = remember { ComposeWindow() }
 
@@ -59,7 +61,7 @@ internal fun SelectFileScreen() {
                 modifier = Modifier
                     .fillMaxWidth(0.80f)
                     .height(64.dp),
-                onClick = {},
+                onClick = { onNavigateToSelectOutput(selectedFilePath.value) },
                 enabled = selectedFilePath.value.isNotBlank(),
                 shape = MaterialTheme.shapes.large
             ) {

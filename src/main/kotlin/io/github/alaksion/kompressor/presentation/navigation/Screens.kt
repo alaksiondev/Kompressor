@@ -7,5 +7,10 @@ sealed interface Screens {
     object SelectFile : Screens
 
     @Serializable
+    data class SelectOutput(
+        val inputPath: String,
+    ) : Screens
+
+    @Serializable
     object ProcessingFile : Screens
 }

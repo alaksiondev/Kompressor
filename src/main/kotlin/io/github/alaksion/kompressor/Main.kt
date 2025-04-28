@@ -5,11 +5,13 @@ import androidx.compose.ui.window.application
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.app_name
 import io.github.alaksion.kompressor.presentation.navigation.Screens
 import io.github.alaksion.kompressor.presentation.screens.compressing.ProcessingVideoScreen
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileScreen
+import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputScreen
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
 
@@ -27,11 +29,23 @@ fun main() = application {
                 startDestination = Screens.SelectFile,
             ) {
                 composable<Screens.SelectFile> {
-                    SelectFileScreen()
+                    SelectFileScreen(
+                        onNavigateToSelectOutput = {
+                            navigator.navigate(Screens.SelectOutput(it))
+                        }
+                    )
                 }
 
                 composable<Screens.ProcessingFile> {
                     ProcessingVideoScreen()
+                }
+
+                composable<Screens.SelectOutput> {
+                    val route = it.toRoute<Screens.SelectOutput>()
+                    SelectOutputScreen(
+                        inputPath = route.inputPath,
+                        onClick = { navigator.popBackStack() }
+                    )
                 }
             }
         }
