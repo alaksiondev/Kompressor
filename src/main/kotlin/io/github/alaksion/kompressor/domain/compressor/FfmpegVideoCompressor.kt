@@ -1,8 +1,8 @@
-package io.github.alaksion.kompressor.compressor
+package io.github.alaksion.kompressor.domain.compressor
 
-import io.github.alaksion.kompressor.params.Codecs
-import io.github.alaksion.kompressor.params.Presets
-import io.github.alaksion.kompressor.params.Resolution
+import io.github.alaksion.kompressor.domain.params.Codecs
+import io.github.alaksion.kompressor.domain.params.Presets
+import io.github.alaksion.kompressor.domain.params.Resolution
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException

@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.screens.compressing
+package io.github.alaksion.kompressor.presentation.screens.compressing
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -12,13 +12,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.alaksion.kompressor.compressor.FfmpegVideoCompressor
-import io.github.alaksion.kompressor.compressor.VideoCompressor
-import io.github.alaksion.kompressor.params.Codecs
+import io.github.alaksion.kompressor.domain.compressor.FfmpegVideoCompressor
+import io.github.alaksion.kompressor.domain.compressor.VideoCompressor
+import io.github.alaksion.kompressor.domain.params.Codecs
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun CompressingVideoScreen() {
+internal fun ProcessingVideoScreen() {
     val compressor: VideoCompressor = remember { FfmpegVideoCompressor() }
     val scope = rememberCoroutineScope()
 

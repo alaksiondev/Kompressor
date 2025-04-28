@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.params
+package io.github.alaksion.kompressor.domain.params
 
 enum class Codecs(
     val supportText: String,

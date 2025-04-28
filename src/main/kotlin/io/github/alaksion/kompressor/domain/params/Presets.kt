@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.params
+package io.github.alaksion.kompressor.domain.params
 
 enum class Presets(val id: String) {
     Ultrafast("ultrafast"),

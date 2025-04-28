@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.params
+package io.github.alaksion.kompressor.domain.params
 
 enum class Resolution(val width: Int, val height: Int) {
     R_240(426, 240),

@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.screens.selectfile
+package io.github.alaksion.kompressor.presentation.screens.selectfile
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable

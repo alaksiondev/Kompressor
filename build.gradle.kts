@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin)
     alias(libs.plugins.jetbrains.compose.kotlin)
     alias(libs.plugins.jetbrains.compose.core)
+    alias(libs.plugins.jetbrains.serialization)
 }
 
 group = "io.github.alaksion.kompressor"
@@ -21,6 +22,10 @@ dependencies {
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
+    implementation(libs.compose.navigation)
+    implementation(compose.components.resources)
+    implementation(libs.kotlin.serialization)
+    implementation(libs.kotlin.coroutines)
 }
 
 compose.desktop {
