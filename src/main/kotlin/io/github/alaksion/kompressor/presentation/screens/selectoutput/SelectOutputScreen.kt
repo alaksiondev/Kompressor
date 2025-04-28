@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.kompressor.generated.resources.*
+import io.github.alaksion.kompressor.presentation.screens.selectoutput.components.CompressionFlow
+import io.github.alaksion.kompressor.presentation.screens.selectoutput.components.CompressionOptions
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.components.openDirectoryBrowser
 import org.jetbrains.compose.resources.stringResource
 
@@ -31,7 +33,19 @@ internal fun SelectOutputScreen(
         inputPath.substringAfterLast("/")
     }
 
+    val compressionFlow = remember { mutableStateOf(CompressionFlow.Express) }
+
     val outputDirectory = remember { mutableStateOf(inputDirectory) }
+
+    val buttonTextResource = remember {
+        derivedStateOf {
+            if (compressionFlow.value == CompressionFlow.Express) {
+                Res.string.select_output_express_cta
+            } else {
+                Res.string.select_output_custom_cta
+            }
+        }
+    }
 
     val outputPath = remember {
         derivedStateOf {
@@ -83,7 +97,8 @@ internal fun SelectOutputScreen(
                     Text(
                         text = stringResource(Res.string.select_output_input_label)
                     )
-                }
+                },
+                maxLines = 1,
             )
 
             Spacer(Modifier.height(32.dp))
@@ -119,10 +134,19 @@ internal fun SelectOutputScreen(
                     Text(
                         text = stringResource(Res.string.select_output_output_label)
                     )
-                }
+                },
+                maxLines = 1,
             )
 
             Spacer(Modifier.height(32.dp))
+
+            CompressionOptions(
+                modifier = Modifier.fillMaxWidth(0.80f),
+                currentFlow = compressionFlow.value,
+                onFlowChanged = { compressionFlow.value = it }
+            )
+
+            Spacer(Modifier.height(16.dp))
 
             Button(
                 modifier = Modifier
@@ -135,7 +159,7 @@ internal fun SelectOutputScreen(
                 shape = MaterialTheme.shapes.large
             ) {
                 Text(
-                    text = stringResource(Res.string.select_file_continue_cta),
+                    text = stringResource(buttonTextResource.value),
                 )
             }
         }
