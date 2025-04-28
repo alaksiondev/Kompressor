@@ -5,16 +5,20 @@ import androidx.compose.ui.window.application
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.github.alaksion.kompressor.kompressor.generated.resources.Res
+import io.github.alaksion.kompressor.kompressor.generated.resources.app_name
 import io.github.alaksion.kompressor.presentation.navigation.Screens
 import io.github.alaksion.kompressor.presentation.screens.compressing.ProcessingVideoScreen
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileScreen
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
+import org.jetbrains.compose.resources.stringResource
 
 
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        resizable = false
+        resizable = false,
+        title = stringResource(Res.string.app_name)
     ) {
         val navigator = rememberNavController()
         KompressorTheme {

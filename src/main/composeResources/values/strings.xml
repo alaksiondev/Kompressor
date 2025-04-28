@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">Kompressor</string>
+
+    <!-- Select file -->
+    <string name="select_file_title">Select a file</string>
+    <string name="select_file_continue_cta">Continue</string>
+</resources>
