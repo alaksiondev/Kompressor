@@ -1,7 +1,10 @@
 package io.github.alaksion.kompressor
 
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,7 +24,10 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         resizable = false,
-        title = stringResource(Res.string.app_name)
+        title = stringResource(Res.string.app_name),
+        state = rememberWindowState(
+            size = DpSize(600.dp, 750.dp)
+        )
     ) {
         val navigator = rememberNavController()
         KompressorTheme {
@@ -46,12 +52,7 @@ fun main() = application {
                     SelectOutputScreen(
                         inputPath = route.inputPath,
                         onExpressClick = { inputPath, outputPath ->
-                            navigator.navigate(
-                                Screens.Params(
-                                    outputPath = outputPath,
-                                    inputPath = inputPath
-                                )
-                            )
+
                         },
                         onCustomClick = { inputPath, outputPath ->
                             navigator.navigate(
