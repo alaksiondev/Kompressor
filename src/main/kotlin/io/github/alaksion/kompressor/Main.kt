@@ -10,7 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import io.github.alaksion.kompressor.domain.compressor.FfmpegVideoCompressor
 import io.github.alaksion.kompressor.domain.params.Codecs
+import io.github.alaksion.kompressor.domain.params.CompressionParams
 import io.github.alaksion.kompressor.domain.params.Presets
 import io.github.alaksion.kompressor.domain.params.Resolution
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
@@ -20,6 +22,7 @@ import io.github.alaksion.kompressor.presentation.navigation.navtypes.CodecsNavT
 import io.github.alaksion.kompressor.presentation.navigation.navtypes.PresetsNavType
 import io.github.alaksion.kompressor.presentation.navigation.navtypes.ResolutionNavType
 import io.github.alaksion.kompressor.presentation.screens.compressing.ProcessingVideoScreen
+import io.github.alaksion.kompressor.presentation.screens.compressing.ProcessingVideoViewModel
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.CompressionParamsScreen
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.CompressionParamsViewModel
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileScreen
@@ -27,6 +30,7 @@ import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileV
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputScreen
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputViewModel
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.compose.resources.stringResource
 import kotlin.reflect.typeOf
 
@@ -66,15 +70,23 @@ fun main() = application {
                 ) { backStackEntry ->
                     val args = backStackEntry.toRoute<Screens.ProcessingFile>()
                     ProcessingVideoScreen(
-                        compressionRate = args.compressionRate,
-                        codecs = args.codecs,
-                        preset = args.preset,
-                        resolution = args.resolution,
-                        inputPath = args.inputPath,
-                        outputPath = args.outputPath,
-                        onBack = {
-                            navigator.popBackStack()
-                        }
+                        params = CompressionParams(
+                            compressionRate = args.compressionRate,
+                            codecs = args.codecs,
+                            preset = args.preset,
+                            resolution = args.resolution,
+                            inputPath = args.inputPath,
+                            outputPath = args.outputPath,
+                        ),
+                        onExit = {
+                            navigator.clearBackStack(route = Screens.SelectFile)
+                        },
+                        viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
+                            ProcessingVideoViewModel(
+                                videoCompressor = FfmpegVideoCompressor(),
+                                ioDispatcher = Dispatchers.IO
+                            )
+                        },
                     )
                 }
 

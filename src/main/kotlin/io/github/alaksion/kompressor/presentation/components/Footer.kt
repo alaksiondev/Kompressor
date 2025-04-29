@@ -2,7 +2,6 @@ package io.github.alaksion.kompressor.presentation.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -26,9 +25,7 @@ internal fun Footer(
         contentAlignment = Alignment.Center
     ) {
         Button(
-            modifier = Modifier
-                .fillMaxWidth(0.80f)
-                .height(64.dp),
+            modifier = Modifier.fillMaxWidth(0.80f),
             onClick = onClick,
             enabled = isActive,
             shape = MaterialTheme.shapes.large

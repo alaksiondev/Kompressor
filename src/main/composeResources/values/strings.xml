@@ -35,4 +35,7 @@
     <string name="compression_params_codec_tooltip">Encoding codec</string>
     <string name="compression_params_resolution_tooltip">Resolution</string>
 
+    <!-- Compression Progress -->
+    <string name="compression_progress_title">File compression</string>"
+
 </resources>
