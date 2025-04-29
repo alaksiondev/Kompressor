@@ -1,6 +1,5 @@
 package io.github.alaksion.kompressor.presentation.screens.selectfile
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
@@ -8,11 +7,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_continue_cta
 import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_title
@@ -21,17 +20,15 @@ import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.FilePickerBox
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.FilePickerBoxState
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.openFileBrowser
-import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SelectFileScreen(
     onNavigateToSelectOutput: (String) -> Unit,
+    viewModel: SelectFileViewModel
 ) {
-    val pickerState = remember {
-        mutableStateOf<FilePickerBoxState>(FilePickerBoxState.Unselected)
-    }
+    val pickerState = viewModel.pickerState.collectAsStateWithLifecycle()
 
     val selectedFilePath = remember {
         derivedStateOf {
@@ -77,15 +74,19 @@ internal fun SelectFileScreen(
                     onClick = {
                         val file = openFileBrowser(window)
                         file?.let { selectedFile ->
-                            pickerState.value = FilePickerBoxState.Selected(
-                                fileName = selectedFile.name,
-                                size = formatFileSize(selectedFile.length()),
-                                filePath = selectedFile.absolutePath
+                            viewModel.updatePickerState(
+                                newState = FilePickerBoxState.Selected(
+                                    fileName = selectedFile.name,
+                                    size = formatFileSize(selectedFile.length()),
+                                    filePath = selectedFile.absolutePath
+                                )
                             )
                         }
                     },
                     onCancelFile = {
-                        pickerState.value = FilePickerBoxState.Unselected
+                        viewModel.updatePickerState(
+                            newState = FilePickerBoxState.Unselected
+                        )
                     }
                 )
             }
@@ -104,12 +105,4 @@ fun formatFileSize(sizeInBytes: Long): String {
     }
 
     return String.format("%.2f %s", size, units[unitIndex])
-}
-
-@Composable
-@Preview
-private fun Preview() {
-    KompressorTheme {
-        SelectFileScreen { }
-    }
 }

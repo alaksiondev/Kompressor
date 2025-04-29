@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,6 +22,7 @@ import io.github.alaksion.kompressor.presentation.navigation.navtypes.Resolution
 import io.github.alaksion.kompressor.presentation.screens.compressing.ProcessingVideoScreen
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.CompressionParamsScreen
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileScreen
+import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileViewModel
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputScreen
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
@@ -42,10 +44,13 @@ fun main() = application {
                 navController = navigator,
                 startDestination = Screens.SelectFile,
             ) {
-                composable<Screens.SelectFile> {
+                composable<Screens.SelectFile> { backStackEntry ->
                     SelectFileScreen(
                         onNavigateToSelectOutput = {
                             navigator.navigate(Screens.SelectOutput(it))
+                        },
+                        viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
+                            SelectFileViewModel()
                         }
                     )
                 }
@@ -56,8 +61,8 @@ fun main() = application {
                         typeOf<Presets>() to PresetsNavType,
                         typeOf<Codecs>() to CodecsNavType
                     )
-                ) {
-                    val args = it.toRoute<Screens.ProcessingFile>()
+                ) { backStackEntry ->
+                    val args = backStackEntry.toRoute<Screens.ProcessingFile>()
                     ProcessingVideoScreen(
                         compressionRate = args.compressionRate,
                         codecs = args.codecs,
@@ -68,8 +73,8 @@ fun main() = application {
                     )
                 }
 
-                composable<Screens.SelectOutput> {
-                    val route = it.toRoute<Screens.SelectOutput>()
+                composable<Screens.SelectOutput> { backStackEntry ->
+                    val route = backStackEntry.toRoute<Screens.SelectOutput>()
                     SelectOutputScreen(
                         inputPath = route.inputPath,
                         onExpressClick = { inputPath, outputPath ->
@@ -92,8 +97,8 @@ fun main() = application {
                     )
                 }
 
-                composable<Screens.Params> {
-                    val route = it.toRoute<Screens.Params>()
+                composable<Screens.Params> { backStackEntry ->
+                    val route = backStackEntry.toRoute<Screens.Params>()
                     CompressionParamsScreen(
                         inputPath = route.inputPath,
                         outputPath = route.outputPath,

@@ -4,15 +4,17 @@ kotlin = "2.1.0"
 navigation = "2.8.0-alpha10"
 serialization = "1.8.1"
 coroutines = "1.10.2"
+viewmodel = "2.8.2"
 
 [libraries]
 
 # Compose
 compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
+compose-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel" }
 
 # Kotlin
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlin-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 
 [plugins]
 jetbrains-kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

@@ -24,8 +24,9 @@ dependencies {
 
     // Libs
     implementation(libs.compose.navigation)
+    implementation(libs.compose.viewmodel)
     implementation(libs.kotlin.serialization)
-    implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.coroutines.swing)
 }
 
 compose.desktop {
