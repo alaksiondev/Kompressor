@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import io.github.alaksion.kompressor.domain.compressor.FfmpegVideoCompressor
+import io.github.alaksion.kompressor.domain.compressor.VideoCompressor
 import io.github.alaksion.kompressor.domain.params.Codecs
 import io.github.alaksion.kompressor.domain.params.CompressionParams
 import io.github.alaksion.kompressor.domain.params.Presets
@@ -83,7 +83,7 @@ fun main() = application {
                         },
                         viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
                             ProcessingVideoViewModel(
-                                videoCompressor = FfmpegVideoCompressor(),
+                                videoCompressor = VideoCompressor.getInstance(),
                                 ioDispatcher = Dispatchers.IO
                             )
                         },

@@ -23,4 +23,8 @@ interface VideoCompressor {
         presets: Presets = Presets.Medium,
         resolution: Resolution = Resolution.R_720
     )
+
+    companion object {
+        fun getInstance(): VideoCompressor = FfmpegVideoCompressor()
+    }
 }
