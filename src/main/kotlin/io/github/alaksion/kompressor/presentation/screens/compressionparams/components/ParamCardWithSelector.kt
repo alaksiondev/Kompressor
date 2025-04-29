@@ -15,6 +15,7 @@ import androidx.compose.ui.window.Dialog
 @Composable
 internal fun <T> ParamCardWithSelector(
     label: String,
+    tooltipText: String,
     options: List<T>,
     selected: T,
     onSelect: (T) -> Unit,
@@ -34,7 +35,8 @@ internal fun <T> ParamCardWithSelector(
         },
         onClick = {
             dialogVisible = true
-        }
+        },
+        tooltipText = tooltipText
     )
 
     if (dialogVisible) {

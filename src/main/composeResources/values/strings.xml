@@ -27,5 +27,9 @@
     <string name="compression_params_presets_label">Presets</string>
     <string name="compression_params_codec_label">Encoding codec</string>
     <string name="compression_params_resolution_label">Resolution</string>
+    <string name="compression_params_rate_tooltip">Compression rate</string>
+    <string name="compression_params_presets_tooltip">Presets</string>
+    <string name="compression_params_codec_tooltip">Encoding codec</string>
+    <string name="compression_params_resolution_tooltip">Resolution</string>
 
 </resources>

@@ -9,15 +9,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import io.github.alaksion.kompressor.domain.params.Codecs
+import io.github.alaksion.kompressor.domain.params.Presets
+import io.github.alaksion.kompressor.domain.params.Resolution
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.app_name
 import io.github.alaksion.kompressor.presentation.navigation.Screens
+import io.github.alaksion.kompressor.presentation.navigation.navtypes.CodecsNavType
+import io.github.alaksion.kompressor.presentation.navigation.navtypes.PresetsNavType
+import io.github.alaksion.kompressor.presentation.navigation.navtypes.ResolutionNavType
 import io.github.alaksion.kompressor.presentation.screens.compressing.ProcessingVideoScreen
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.CompressionParamsScreen
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileScreen
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputScreen
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
+import kotlin.reflect.typeOf
 
 
 fun main() = application {
@@ -43,7 +50,13 @@ fun main() = application {
                     )
                 }
 
-                composable<Screens.ProcessingFile> {
+                composable<Screens.ProcessingFile>(
+                    typeMap = mapOf(
+                        typeOf<Resolution>() to ResolutionNavType,
+                        typeOf<Presets>() to PresetsNavType,
+                        typeOf<Codecs>() to CodecsNavType
+                    )
+                ) {
                     val args = it.toRoute<Screens.ProcessingFile>()
                     ProcessingVideoScreen(
                         compressionRate = args.compressionRate,

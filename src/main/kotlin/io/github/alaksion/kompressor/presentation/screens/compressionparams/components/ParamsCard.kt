@@ -1,5 +1,6 @@
 package io.github.alaksion.kompressor.presentation.screens.compressionparams.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -12,11 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ParamsCard(
     label: String,
+    tooltipText: String?,
     content: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
@@ -34,7 +38,8 @@ internal fun ParamsCard(
     Column(modifier = modifier) {
         Text(
             text = label,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.body1,
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(Modifier.height(8.dp))
         Card(modifier = cardModifier.fillMaxWidth()) {

@@ -64,6 +64,16 @@ internal fun CompressionParamsScreen(
                 label = stringResource(Res.string.compression_params_cta),
                 isActive = true,
                 onClick = {
+                    onContinue(
+                        CompressionParams(
+                            codecs = codec.value,
+                            resolution = resolution.value,
+                            preset = preset.value,
+                            compressionRate = (compressionRate.value * 100).toInt(),
+                            inputPath = inputPath,
+                            outputPath = outputPath
+                        )
+                    )
                 }
             )
         }
@@ -86,7 +96,8 @@ internal fun CompressionParamsScreen(
                             text = fileFormat,
                             style = MaterialTheme.typography.body2
                         )
-                    }
+                    },
+                    tooltipText = null
                 )
 
                 ParamsCard(
@@ -98,9 +109,10 @@ internal fun CompressionParamsScreen(
                             onValueChange = {
                                 compressionRate.value = it
                             },
-                            valueRange = 0.0f..0.51f
+                            valueRange = 0.1f..0.51f
                         )
-                    }
+                    },
+                    tooltipText = stringResource(Res.string.compression_params_rate_tooltip)
                 )
 
                 ParamCardWithSelector(
@@ -110,6 +122,7 @@ internal fun CompressionParamsScreen(
                     options = Presets.entries.toList(),
                     onSelect = { preset.value = it },
                     itemLabelFactory = { it.name },
+                    tooltipText = stringResource(Res.string.compression_params_presets_tooltip)
                 )
 
                 ParamCardWithSelector(
@@ -119,6 +132,7 @@ internal fun CompressionParamsScreen(
                     options = Codecs.entries.toList(),
                     onSelect = { codec.value = it },
                     itemLabelFactory = { it.name },
+                    tooltipText = stringResource(Res.string.compression_params_codec_tooltip)
                 )
 
                 ParamCardWithSelector(
@@ -128,6 +142,7 @@ internal fun CompressionParamsScreen(
                     options = Resolution.entries.toList(),
                     onSelect = { resolution.value = it },
                     itemLabelFactory = { it.label },
+                    tooltipText = stringResource(Res.string.compression_params_resolution_tooltip)
                 )
 
                 Spacer(Modifier.weight(1f))
