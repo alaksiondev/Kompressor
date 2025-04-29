@@ -15,10 +15,19 @@ import androidx.compose.ui.unit.dp
 import io.github.alaksion.kompressor.domain.compressor.FfmpegVideoCompressor
 import io.github.alaksion.kompressor.domain.compressor.VideoCompressor
 import io.github.alaksion.kompressor.domain.params.Codecs
+import io.github.alaksion.kompressor.domain.params.Presets
+import io.github.alaksion.kompressor.domain.params.Resolution
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun ProcessingVideoScreen() {
+internal fun ProcessingVideoScreen(
+    compressionRate: Int,
+    codecs: Codecs,
+    preset: Presets,
+    resolution: Resolution,
+    inputPath: String,
+    outputPath: String,
+) {
     val compressor: VideoCompressor = remember { FfmpegVideoCompressor() }
     val scope = rememberCoroutineScope()
 

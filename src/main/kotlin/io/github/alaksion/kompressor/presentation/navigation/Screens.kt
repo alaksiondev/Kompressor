@@ -1,5 +1,8 @@
 package io.github.alaksion.kompressor.presentation.navigation
 
+import io.github.alaksion.kompressor.domain.params.Codecs
+import io.github.alaksion.kompressor.domain.params.Presets
+import io.github.alaksion.kompressor.domain.params.Resolution
 import kotlinx.serialization.Serializable
 
 sealed interface Screens {
@@ -18,5 +21,12 @@ sealed interface Screens {
     )
 
     @Serializable
-    object ProcessingFile : Screens
+    data class ProcessingFile(
+        val compressionRate: Int = 23,
+        val codecs: Codecs = Codecs.Libx264,
+        val preset: Presets = Presets.Fast,
+        val resolution: Resolution = Resolution.R_480,
+        val inputPath: String,
+        val outputPath: String,
+    ) : Screens
 }

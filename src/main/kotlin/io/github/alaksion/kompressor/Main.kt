@@ -44,7 +44,15 @@ fun main() = application {
                 }
 
                 composable<Screens.ProcessingFile> {
-                    ProcessingVideoScreen()
+                    val args = it.toRoute<Screens.ProcessingFile>()
+                    ProcessingVideoScreen(
+                        compressionRate = args.compressionRate,
+                        codecs = args.codecs,
+                        preset = args.preset,
+                        resolution = args.resolution,
+                        inputPath = args.inputPath,
+                        outputPath = args.outputPath
+                    )
                 }
 
                 composable<Screens.SelectOutput> {
@@ -52,7 +60,12 @@ fun main() = application {
                     SelectOutputScreen(
                         inputPath = route.inputPath,
                         onExpressClick = { inputPath, outputPath ->
-
+                            navigator.navigate(
+                                route = Screens.ProcessingFile(
+                                    inputPath = inputPath,
+                                    outputPath = outputPath
+                                )
+                            )
                         },
                         onCustomClick = { inputPath, outputPath ->
                             navigator.navigate(
@@ -71,8 +84,17 @@ fun main() = application {
                     CompressionParamsScreen(
                         inputPath = route.inputPath,
                         outputPath = route.outputPath,
-                        onContinue = {
-
+                        onContinue = { params ->
+                            navigator.navigate(
+                                route = Screens.ProcessingFile(
+                                    inputPath = params.inputPath,
+                                    outputPath = params.outputPath,
+                                    compressionRate = params.compressionRate,
+                                    resolution = params.resolution,
+                                    codecs = params.codecs,
+                                    preset = params.preset,
+                                )
+                            )
                         },
                         onBack = { navigator.popBackStack() }
                     )
