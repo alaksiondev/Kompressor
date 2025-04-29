@@ -1,7 +1,6 @@
 package io.github.alaksion.kompressor.presentation.screens.selectfile.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,14 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import dashedBorder
 import io.github.alaksion.kompressor.configs.SupportedFiles
 import io.github.alaksion.kompressor.kompressor.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
@@ -37,30 +33,13 @@ internal sealed interface FilePickerBoxState {
 @Composable
 internal fun FilePickerBox(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
     onCancelFile: () -> Unit,
-    state: FilePickerBoxState
+    state: FilePickerBoxState,
+    supportedFormats: String
 ) {
-    val supportedFormats = remember {
-        SupportedFiles.entries.joinToString(separator = ",") {
-            it.extension
-        }
-    }
-
     Column {
         Column(
-            modifier = modifier
-                .clickable(
-                    enabled = state is FilePickerBoxState.Unselected,
-                    onClick = onClick
-                )
-                .dashedBorder(
-                    color = MaterialTheme.colors.onSurface,
-                    shape = MaterialTheme.shapes.medium,
-                    gapLength = 18.dp,
-                    dashLength = 12.dp
-                )
-                .pointerHoverIcon(icon = PointerIcon.Hand),
+            modifier = modifier,
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -77,7 +56,7 @@ internal fun FilePickerBox(
                 SelectedFileDetails(
                     name = internalState.fileName,
                     size = internalState.size,
-                    modifier = Modifier.fillMaxWidth(0.5f),
+                    modifier = Modifier.fillMaxWidth(0.8f),
                     onCancelFile = onCancelFile
                 )
             }
