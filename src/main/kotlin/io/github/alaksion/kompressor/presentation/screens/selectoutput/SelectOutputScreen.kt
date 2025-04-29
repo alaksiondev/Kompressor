@@ -10,11 +10,12 @@ import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.alaksion.kompressor.kompressor.generated.resources.*
 import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
@@ -28,7 +29,8 @@ internal fun SelectOutputScreen(
     inputPath: String,
     onBack: () -> Unit,
     onExpressClick: (String, String) -> Unit,
-    onCustomClick: (String, String) -> Unit
+    onCustomClick: (String, String) -> Unit,
+    viewModel: SelectOutputViewModel,
 ) {
     val inputDirectory = remember(inputPath) {
         inputPath.substringBeforeLast("/")
@@ -38,9 +40,8 @@ internal fun SelectOutputScreen(
         inputPath.substringAfterLast("/")
     }
 
-    val compressionFlow = remember { mutableStateOf(CompressionFlow.Express) }
-
-    val outputDirectory = remember { mutableStateOf(inputDirectory) }
+    val compressionFlow = viewModel.compressionFlow.collectAsStateWithLifecycle()
+    val outputPath = viewModel.outputPath.collectAsStateWithLifecycle()
 
     val buttonTextResource = remember {
         derivedStateOf {
@@ -52,16 +53,11 @@ internal fun SelectOutputScreen(
         }
     }
 
-    val outputPath = remember {
-        derivedStateOf {
-            if (outputDirectory.value.isNotBlank()) {
-                val inputNameSplit = inputName.split(".")
-                val outputFileName = inputNameSplit[0] + "_compressed" + ".${inputNameSplit[1]}"
-                "${outputDirectory.value}/${outputFileName}"
-            } else {
-                ""
-            }
-        }
+    LaunchedEffect(Unit) {
+        viewModel.setOutputPath(
+            path = inputDirectory,
+            inputFileName = inputName
+        )
     }
 
     val scrollState = rememberScrollState()
@@ -138,7 +134,10 @@ internal fun SelectOutputScreen(
                                 openDirectoryBrowser(
                                     defaultDirectory = inputDirectory,
                                 )?.let {
-                                    outputDirectory.value = it
+                                    viewModel.setOutputPath(
+                                        path = it,
+                                        inputFileName = inputName
+                                    )
                                 }
                             }
                         ) {
@@ -166,7 +165,9 @@ internal fun SelectOutputScreen(
                 CompressionOptions(
                     modifier = Modifier.fillMaxWidth(),
                     currentFlow = compressionFlow.value,
-                    onFlowChanged = { compressionFlow.value = it }
+                    onFlowChanged = {
+                        viewModel.setCompressionFlow(it)
+                    }
                 )
             }
         }

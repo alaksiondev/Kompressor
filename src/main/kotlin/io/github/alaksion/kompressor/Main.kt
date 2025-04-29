@@ -24,6 +24,7 @@ import io.github.alaksion.kompressor.presentation.screens.compressionparams.Comp
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileScreen
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileViewModel
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputScreen
+import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputViewModel
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
 import kotlin.reflect.typeOf
@@ -93,7 +94,10 @@ fun main() = application {
                                 )
                             )
                         },
-                        onBack = { navigator.popBackStack() }
+                        onBack = { navigator.popBackStack() },
+                        viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
+                            SelectOutputViewModel()
+                        }
                     )
                 }
 
