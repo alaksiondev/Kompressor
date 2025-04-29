@@ -8,9 +8,10 @@
     <string name="select_file_picker_upper_label">Drag &amp; drop file</string>
     <string name="select_file_picker_bottom_label">or browse system files</string>
     <string name="select_file_picker_formats">Supported formats: %1$s</string>
-    <string name="select_file_invalid_type_dialog_title">Invalid file type</string>
-    <string name="select_file_invalid_type_dialog_description">Format .%1$s is not supported</string>
+    <string name="select_file_invalid_type_dialog_title">Unsupported file type</string>
+    <string name="select_file_invalid_type_dialog_description">Could not process .%1$s file</string>
     <string name="select_file_invalid_type_dialog_button">Continue</string>
+    <string name="select_file_invalid_type_dialog_retry">Retry using a valid file format</string>
 
     <!-- Select output -->
     <string name="select_output_title">Select file output</string>
