@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
@@ -32,7 +33,8 @@ internal fun ParamsCard(
 
     Column(modifier = modifier) {
         Text(
-            text = label
+            text = label,
+            style = MaterialTheme.typography.h6
         )
         Spacer(Modifier.height(8.dp))
         Card(modifier = cardModifier.fillMaxWidth()) {

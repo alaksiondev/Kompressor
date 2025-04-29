@@ -3,29 +3,33 @@ package io.github.alaksion.kompressor.presentation.screens.compressionparams.com
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import io.github.alaksion.kompressor.domain.params.Presets
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun PresetCard(
-    modifier: Modifier = Modifier,
-    dropdownMenuState: DropdownMenuState,
-    preset: Presets,
-    onPresetChange: (Presets) -> Unit
+internal fun <T> ParamCardWithSelector(
+    label: String,
+    options: List<T>,
+    selected: T,
+    onSelect: (T) -> Unit,
+    itemLabelFactory: (T) -> String,
+    modifier: Modifier = Modifier
 ) {
     var dialogVisible by remember { mutableStateOf(false) }
 
     ParamsCard(
         modifier = modifier,
-        label = "Preset",
+        label = label,
         content = {
             Text(
-                text = preset.name
+                text = itemLabelFactory(selected),
+                style = MaterialTheme.typography.body2
             )
         },
         onClick = {
@@ -40,7 +44,7 @@ internal fun PresetCard(
         ) {
             Card(
                 modifier = Modifier
-                    .height(300.dp)
+                    .heightIn(max = 300.dp)
                     .width(300.dp),
                 shape = MaterialTheme.shapes.large,
                 elevation = 2.dp
@@ -60,14 +64,14 @@ internal fun PresetCard(
                         modifier = Modifier
                             .verticalScroll(scrollState)
                     ) {
-                        Presets.entries.forEach { preset ->
+                        options.forEach { item ->
                             DropdownMenuItem(
                                 onClick = {
-                                    onPresetChange(preset)
+                                    onSelect(item)
                                     dialogVisible = false
                                 }
                             ) {
-                                Text(text = preset.name)
+                                Text(text = itemLabelFactory(item))
                             }
                         }
                     }

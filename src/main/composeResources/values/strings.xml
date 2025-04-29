@@ -22,4 +22,10 @@
     <!-- Compression Params -->
     <string name="compression_params_title">Configure compression</string>
     <string name="compression_params_cta">Compress file</string>
+    <string name="compression_params_format_label">Format</string>
+    <string name="compression_params_rate_label">Compression rate</string>
+    <string name="compression_params_presets_label">Presets</string>
+    <string name="compression_params_codec_label">Encoding codec</string>
+    <string name="compression_params_resolution_label">Resolution</string>
+
 </resources>

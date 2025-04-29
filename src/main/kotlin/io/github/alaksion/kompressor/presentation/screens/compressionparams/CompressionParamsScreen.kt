@@ -16,13 +16,11 @@ import io.github.alaksion.kompressor.domain.params.Codecs
 import io.github.alaksion.kompressor.domain.params.CompressionParams
 import io.github.alaksion.kompressor.domain.params.Presets
 import io.github.alaksion.kompressor.domain.params.Resolution
-import io.github.alaksion.kompressor.kompressor.generated.resources.Res
-import io.github.alaksion.kompressor.kompressor.generated.resources.compression_params_cta
-import io.github.alaksion.kompressor.kompressor.generated.resources.compression_params_title
+import io.github.alaksion.kompressor.kompressor.generated.resources.*
 import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
+import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.ParamCardWithSelector
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.ParamsCard
-import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.PresetCard
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
 
@@ -80,18 +78,20 @@ internal fun CompressionParamsScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Spacer(Modifier.weight(1f))
+
                 ParamsCard(
-                    label = "Format",
+                    label = stringResource(Res.string.compression_params_format_label),
                     content = {
                         Text(
-                            text = fileFormat
+                            text = fileFormat,
+                            style = MaterialTheme.typography.body2
                         )
                     }
                 )
 
                 ParamsCard(
                     modifier = Modifier.fillMaxWidth(),
-                    label = "Compression rate",
+                    label = stringResource(Res.string.compression_params_rate_label),
                     content = {
                         Slider(
                             value = compressionRate.value,
@@ -103,37 +103,31 @@ internal fun CompressionParamsScreen(
                     }
                 )
 
-                PresetCard(
+                ParamCardWithSelector(
+                    label = stringResource(Res.string.compression_params_presets_label),
                     modifier = Modifier.fillMaxWidth(),
-                    preset = preset.value,
-                    onPresetChange = { preset.value = it },
-                    dropdownMenuState = remember { DropdownMenuState() }
+                    selected = preset.value,
+                    options = Presets.entries.toList(),
+                    onSelect = { preset.value = it },
+                    itemLabelFactory = { it.name },
                 )
 
-                ParamsCard(
+                ParamCardWithSelector(
+                    label = stringResource(Res.string.compression_params_codec_label),
                     modifier = Modifier.fillMaxWidth(),
-                    label = "Encoding codec",
-                    content = {
-                        Text(
-                            text = codec.value.name
-                        )
-                    },
-                    onClick = {
-
-                    }
+                    selected = codec.value,
+                    options = Codecs.entries.toList(),
+                    onSelect = { codec.value = it },
+                    itemLabelFactory = { it.name },
                 )
 
-                ParamsCard(
+                ParamCardWithSelector(
+                    label = stringResource(Res.string.compression_params_resolution_label),
                     modifier = Modifier.fillMaxWidth(),
-                    label = "Resolution",
-                    content = {
-                        Text(
-                            text = resolution.value.label
-                        )
-                    },
-                    onClick = {
-
-                    }
+                    selected = resolution.value,
+                    options = Resolution.entries.toList(),
+                    onSelect = { resolution.value = it },
+                    itemLabelFactory = { it.label },
                 )
 
                 Spacer(Modifier.weight(1f))
