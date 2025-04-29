@@ -4,8 +4,9 @@ import io.github.alaksion.kompressor.domain.params.Codecs
 import io.github.alaksion.kompressor.domain.params.Presets
 import io.github.alaksion.kompressor.domain.params.Resolution
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import java.io.IOException
 import kotlin.io.path.Path
 
 internal class FfmpegVideoCompressor : VideoCompressor {
@@ -17,7 +18,7 @@ internal class FfmpegVideoCompressor : VideoCompressor {
         crf: Int,
         presets: Presets,
         resolution: Resolution
-    ) {
+    ): Flow<ProcessMessage> {
         require(crf in 1..51) { "CRF must be between 1 and 51" }
 
         val scriptPath = Path("").toAbsolutePath().toString() + "/python/video_compressor.py"
@@ -33,32 +34,30 @@ internal class FfmpegVideoCompressor : VideoCompressor {
             "--scale", "${resolution.width}:${resolution.height}"
         ).redirectErrorStream(true).start()
 
-        withContext(Dispatchers.IO) {
-            process.inputStream.bufferedReader().use { reader ->
-                reader.lineSequence().forEach { line ->
-                    println("STDOUT: $line") // Print each line in real-time
+        return flow {
+            withContext(Dispatchers.IO) {
+                process.inputStream.bufferedReader().use { reader ->
+                    reader.lineSequence().forEach { line ->
+                        emit(value = ProcessMessage.DebugLog(message = line))
+                    }
                 }
             }
-        }
 
-        withContext(Dispatchers.IO) {
-            process.errorStream.bufferedReader().use { reader ->
-                reader.lineSequence().forEach { line ->
-                    System.err.println("STDERR: $line") // Print each error line in real-time
+            withContext(Dispatchers.IO) {
+                process.errorStream.bufferedReader().use { reader ->
+                    reader.lineSequence().forEach { line ->
+                        emit(value = ProcessMessage.ErrorLog(message = line))
+                    }
                 }
             }
+
+            val exitCode = process.waitFor()
+
+            if (exitCode != 0) {
+                emit(ProcessMessage.Failure)
+            } else {
+                emit(ProcessMessage.Success)
+            }
         }
-
-        val exitCode = process.waitFor()
-
-        if (exitCode != 0) {
-            throw IOException(
-                """
-                Python script failed with exit code $exitCode         
-            """.trimIndent()
-            )
-        }
-
-        println("Compression successful")
     }
 }
