@@ -49,9 +49,12 @@ internal fun ProcessingVideoScreen(
                     scope.launch {
                         inProgress.value = true
                         compressor.compress(
-                            inputPath = "/Users/alaksion/IdeaProjects/Kompressor/python/input.mp4",
-                            outputPath = "/Users/alaksion/IdeaProjects/Kompressor/python/output.mp4",
-                            codecs = Codecs.Libx264,
+                            inputPath = inputPath,
+                            outputPath = outputPath,
+                            codecs = codecs,
+                            resolution = resolution,
+                            presets = preset,
+                            crf = compressionRate
                         )
                         inProgress.value = false
                     }
