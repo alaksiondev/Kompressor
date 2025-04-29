@@ -10,6 +10,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -17,6 +18,9 @@ import io.github.alaksion.kompressor.domain.params.CompressionParams
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.compression_progress_title
 import io.github.alaksion.kompressor.presentation.components.ContentSurface
+import io.github.alaksion.kompressor.presentation.components.Footer
+import io.github.alaksion.kompressor.presentation.screens.compressing.components.SuccessState
+import io.github.alaksion.kompressor.presentation.utils.formatFileSize
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -30,6 +34,9 @@ internal fun ProcessingVideoScreen(
     val originalFileSize by viewModel.originalFileSize.collectAsStateWithLifecycle()
     val compressedFileSize by viewModel.compressedFileSize.collectAsStateWithLifecycle()
     val sizeDiff by viewModel.sizeDiff.collectAsStateWithLifecycle()
+    val compressedFileName = remember(params.outputPath) {
+        params.outputPath.substringAfterLast("/")
+    }
 
     LaunchedEffect(Unit) {
         viewModel.compress(params)
@@ -46,6 +53,21 @@ internal fun ProcessingVideoScreen(
             )
         },
         bottomBar = {
+            Footer(
+                label = when (mode) {
+                    ProcessingVideoScreenMode.Compressing -> ("Done")
+                    is ProcessingVideoScreenMode.Error -> ("Retry")
+                    ProcessingVideoScreenMode.Finished -> ("Done")
+                },
+                isActive = mode !is ProcessingVideoScreenMode.Compressing,
+                onClick = {
+                    when (mode) {
+                        is ProcessingVideoScreenMode.Error -> viewModel.compress(params)
+                        ProcessingVideoScreenMode.Compressing -> Unit
+                        ProcessingVideoScreenMode.Finished -> onExit()
+                    }
+                }
+            )
         }
     ) {
         ContentSurface {
@@ -63,7 +85,13 @@ internal fun ProcessingVideoScreen(
                     )
 
                     ProcessingVideoScreenMode.Finished -> {
-                        Text("Done", Modifier.align(Alignment.CenterHorizontally))
+                        SuccessState(
+                            inputFileSize = originalFileSize.formatFileSize(),
+                            outputFileSize = compressedFileSize.formatFileSize(),
+                            sizeDiff = sizeDiff,
+                            outputFileDir = params.outputPath.substringBeforeLast("/"),
+                            outputFileName = compressedFileName
+                        )
                     }
                 }
             }

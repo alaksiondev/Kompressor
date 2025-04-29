@@ -1,4 +1,4 @@
-package io.github.alaksion.kompressor.presentation.screens.compressionparams.components
+package io.github.alaksion.kompressor.presentation.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun ParamsCard(
+internal fun LabeledCard(
     label: String,
-    tooltipText: String?,
-    content: @Composable RowScope.() -> Unit,
+    tooltipText: String? = null,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
+    content: @Composable RowScope.() -> Unit,
 ) {
     val cardModifier = remember {
         if (onClick != null) {

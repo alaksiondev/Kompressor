@@ -19,7 +19,7 @@ import io.github.alaksion.kompressor.kompressor.generated.resources.*
 import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.ParamCardWithSelector
-import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.ParamsCard
+import io.github.alaksion.kompressor.presentation.components.LabeledCard
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -88,7 +88,7 @@ internal fun CompressionParamsScreen(
             ) {
                 Spacer(Modifier.weight(1f))
 
-                ParamsCard(
+                LabeledCard(
                     label = stringResource(Res.string.compression_params_format_label),
                     content = {
                         Text(
@@ -99,7 +99,7 @@ internal fun CompressionParamsScreen(
                     tooltipText = null
                 )
 
-                ParamsCard(
+                LabeledCard(
                     modifier = Modifier.fillMaxWidth(),
                     label = stringResource(Res.string.compression_params_rate_label),
                     content = {

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import io.github.alaksion.kompressor.domain.compressor.ProcessMessage
 import io.github.alaksion.kompressor.domain.compressor.VideoCompressor
 import io.github.alaksion.kompressor.domain.params.CompressionParams
-import io.github.alaksion.kompressor.presentation.utils.formatFileSize
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,11 +18,14 @@ internal class ProcessingVideoViewModel(
     val originalFileSize = MutableStateFlow(0L)
     val compressedFileSize = MutableStateFlow(0L)
 
-    val sizeDiff = originalFileSize.combine(compressedFileSize) { original, compressed ->
-        (original - compressed).formatFileSize()
+    val sizeDiff: StateFlow<String> = originalFileSize.combine(compressedFileSize) { original, compressed ->
+        String.format(
+            "%.2f%%",
+            (original - compressed).toDouble() / original * 100
+        )
     }.stateIn(
         scope = viewModelScope,
-        initialValue = 0,
+        initialValue = "0.00%",
         started = SharingStarted.Eagerly
     )
 

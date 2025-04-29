@@ -38,4 +38,12 @@
     <!-- Compression Progress -->
     <string name="compression_progress_title">File compression</string>"
 
+    <!-- Compression success -->
+    <string name="compression_success_title">Compression completed successfully</string>
+    <string name="compression_success_original_size">Original size</string>
+    <string name="compression_success_compressed_size">Compressed size</string>
+    <string name="compression_success_compression_rate">Compression rate</string>
+    <string name="compression_success_cta">Open folder</string>
+    <string name="compression_success_filename">File name</string>
+
 </resources>

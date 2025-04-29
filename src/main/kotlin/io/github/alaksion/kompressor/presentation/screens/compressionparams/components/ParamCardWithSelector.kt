@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import io.github.alaksion.kompressor.presentation.components.LabeledCard
 
 @Composable
 internal fun <T> ParamCardWithSelector(
@@ -24,7 +25,7 @@ internal fun <T> ParamCardWithSelector(
 ) {
     var dialogVisible by remember { mutableStateOf(false) }
 
-    ParamsCard(
+    LabeledCard(
         modifier = modifier,
         label = label,
         content = {
