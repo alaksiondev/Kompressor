@@ -3,6 +3,7 @@ package io.github.alaksion.kompressor.domain.compressor
 import io.github.alaksion.kompressor.domain.params.Codecs
 import io.github.alaksion.kompressor.domain.params.Presets
 import io.github.alaksion.kompressor.domain.params.Resolution
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
 interface VideoCompressor {
@@ -22,7 +23,7 @@ interface VideoCompressor {
         codecs: Codecs,
         crf: Int = 23,
         presets: Presets = Presets.Medium,
-        resolution: Resolution = Resolution.R_720
+        resolution: Resolution = Resolution.R_720,
     ): Flow<ProcessMessage>
 
     companion object {
@@ -31,8 +32,6 @@ interface VideoCompressor {
 }
 
 sealed interface ProcessMessage {
-    data class DebugLog(val message: String) : ProcessMessage
-    data class ErrorLog(val message: String) : ProcessMessage
     data object Success : ProcessMessage
     data object Failure : ProcessMessage
 }

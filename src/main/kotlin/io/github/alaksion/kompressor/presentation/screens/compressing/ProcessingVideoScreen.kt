@@ -27,6 +27,10 @@ internal fun ProcessingVideoScreen(
 ) {
     val mode by viewModel.screenMode.collectAsStateWithLifecycle()
 
+    val originalFileSize by viewModel.originalFileSize.collectAsStateWithLifecycle()
+    val compressedFileSize by viewModel.compressedFileSize.collectAsStateWithLifecycle()
+    val sizeDiff by viewModel.sizeDiff.collectAsStateWithLifecycle()
+
     LaunchedEffect(Unit) {
         viewModel.compress(params)
     }
@@ -54,7 +58,9 @@ internal fun ProcessingVideoScreen(
                         CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
                     }
 
-                    is ProcessingVideoScreenMode.Error -> TODO()
+                    is ProcessingVideoScreenMode.Error -> Text(
+                        text = "failed"
+                    )
 
                     ProcessingVideoScreenMode.Finished -> {
                         Text("Done", Modifier.align(Alignment.CenterHorizontally))

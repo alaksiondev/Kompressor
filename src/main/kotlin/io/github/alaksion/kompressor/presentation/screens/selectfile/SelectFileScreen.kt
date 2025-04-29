@@ -27,6 +27,7 @@ import io.github.alaksion.kompressor.kompressor.generated.resources.select_file_
 import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.selectfile.components.*
+import io.github.alaksion.kompressor.presentation.utils.formatFileSize
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
@@ -55,7 +56,7 @@ internal fun SelectFileScreen(
             viewModel.updatePickerState(
                 newState = FilePickerBoxState.Selected(
                     fileName = result.fileName,
-                    size = formatFileSize(result.size),
+                    size = result.size.formatFileSize(),
                     filePath = result.filePath
                 )
             )
@@ -111,7 +112,7 @@ internal fun SelectFileScreen(
                                     viewModel.updatePickerState(
                                         newState = FilePickerBoxState.Selected(
                                             fileName = selectedFile.name,
-                                            size = formatFileSize(selectedFile.length()),
+                                            size = selectedFile.length().formatFileSize(),
                                             filePath = selectedFile.absolutePath
                                         )
                                     )
@@ -152,17 +153,4 @@ internal fun SelectFileScreen(
             }
         }
     }
-}
-
-fun formatFileSize(sizeInBytes: Long): String {
-    val units = arrayOf("B", "KB", "MB", "GB", "TB", "PB")
-    var size = sizeInBytes.toDouble()
-    var unitIndex = 0
-
-    while (size >= 1024 && unitIndex < units.size - 1) {
-        size /= 1024
-        unitIndex++
-    }
-
-    return String.format("%.2f %s", size, units[unitIndex])
 }
