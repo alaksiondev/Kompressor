@@ -1,6 +1,5 @@
 package io.github.alaksion.kompressor.presentation.screens.compressionparams
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -8,10 +7,10 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.alaksion.kompressor.domain.params.Codecs
 import io.github.alaksion.kompressor.domain.params.CompressionParams
 import io.github.alaksion.kompressor.domain.params.Presets
@@ -21,7 +20,6 @@ import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.ParamCardWithSelector
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.components.ParamsCard
-import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -30,16 +28,17 @@ internal fun CompressionParamsScreen(
     outputPath: String,
     onContinue: (CompressionParams) -> Unit,
     onBack: () -> Unit,
+    viewModel: CompressionParamsViewModel
 ) {
     val fileFormat = remember(inputPath) {
         inputPath.substringAfterLast('.').uppercase()
     }
 
-    val codec = remember { mutableStateOf(Codecs.Libx264) }
-    val resolution = remember { mutableStateOf(Resolution.R_480) }
-    val preset = remember { mutableStateOf(Presets.Medium) }
-    // Goes from 0 to 51
-    val compressionRate = remember { mutableStateOf(0.23f) }
+    val codec = viewModel.codec.collectAsStateWithLifecycle()
+    val resolution = viewModel.resolution.collectAsStateWithLifecycle()
+    val preset = viewModel.preset.collectAsStateWithLifecycle()
+    val compressionRate = viewModel.compressionRate.collectAsStateWithLifecycle()
+    val compressionRateFormatted = viewModel.compressionRateFormatted.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
 
@@ -107,7 +106,7 @@ internal fun CompressionParamsScreen(
                         Slider(
                             value = compressionRate.value,
                             onValueChange = {
-                                compressionRate.value = it
+                                viewModel.setCompressionRate(it)
                             },
                             valueRange = 0.1f..0.51f
                         )
@@ -120,7 +119,7 @@ internal fun CompressionParamsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     selected = preset.value,
                     options = Presets.entries.toList(),
-                    onSelect = { preset.value = it },
+                    onSelect = { viewModel.setPreset(it) },
                     itemLabelFactory = { it.name },
                     tooltipText = stringResource(Res.string.compression_params_presets_tooltip)
                 )
@@ -130,7 +129,7 @@ internal fun CompressionParamsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     selected = codec.value,
                     options = Codecs.entries.toList(),
-                    onSelect = { codec.value = it },
+                    onSelect = { viewModel.setCodec(it) },
                     itemLabelFactory = { it.name },
                     tooltipText = stringResource(Res.string.compression_params_codec_tooltip)
                 )
@@ -140,7 +139,7 @@ internal fun CompressionParamsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     selected = resolution.value,
                     options = Resolution.entries.toList(),
-                    onSelect = { resolution.value = it },
+                    onSelect = { viewModel.setResolution(it) },
                     itemLabelFactory = { it.label },
                     tooltipText = stringResource(Res.string.compression_params_resolution_tooltip)
                 )
@@ -148,18 +147,5 @@ internal fun CompressionParamsScreen(
                 Spacer(Modifier.weight(1f))
             }
         }
-    }
-}
-
-@Composable
-@Preview
-private fun Preview() {
-    KompressorTheme {
-        CompressionParamsScreen(
-            inputPath = "/Users/alaksion/IdeaProjects/Kompressor/python/video.mp4",
-            outputPath = "/Users/alaksion/IdeaProjects/Kompressor/python/video_compressed.mp4",
-            onContinue = {},
-            onBack = {}
-        )
     }
 }

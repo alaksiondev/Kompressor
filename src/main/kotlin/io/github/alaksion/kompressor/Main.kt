@@ -21,6 +21,7 @@ import io.github.alaksion.kompressor.presentation.navigation.navtypes.PresetsNav
 import io.github.alaksion.kompressor.presentation.navigation.navtypes.ResolutionNavType
 import io.github.alaksion.kompressor.presentation.screens.compressing.ProcessingVideoScreen
 import io.github.alaksion.kompressor.presentation.screens.compressionparams.CompressionParamsScreen
+import io.github.alaksion.kompressor.presentation.screens.compressionparams.CompressionParamsViewModel
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileScreen
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileViewModel
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputScreen
@@ -70,7 +71,10 @@ fun main() = application {
                         preset = args.preset,
                         resolution = args.resolution,
                         inputPath = args.inputPath,
-                        outputPath = args.outputPath
+                        outputPath = args.outputPath,
+                        onBack = {
+                            navigator.popBackStack()
+                        }
                     )
                 }
 
@@ -118,7 +122,10 @@ fun main() = application {
                                 )
                             )
                         },
-                        onBack = { navigator.popBackStack() }
+                        onBack = { navigator.popBackStack() },
+                        viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
+                            CompressionParamsViewModel()
+                        }
                     )
                 }
             }

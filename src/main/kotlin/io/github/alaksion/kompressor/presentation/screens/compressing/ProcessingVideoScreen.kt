@@ -27,6 +27,7 @@ internal fun ProcessingVideoScreen(
     resolution: Resolution,
     inputPath: String,
     outputPath: String,
+    onBack: () -> Unit,
 ) {
     val compressor: VideoCompressor = remember { FfmpegVideoCompressor() }
     val scope = rememberCoroutineScope()
@@ -37,6 +38,9 @@ internal fun ProcessingVideoScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
+            Button(onBack) {
+                Text("Back")
+            }
             if (inProgress.value) {
                 CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
             } else {
