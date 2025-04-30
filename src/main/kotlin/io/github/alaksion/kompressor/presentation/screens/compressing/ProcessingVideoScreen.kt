@@ -3,6 +3,7 @@ package io.github.alaksion.kompressor.presentation.screens.compressing
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -69,10 +70,12 @@ internal fun ProcessingVideoScreen(
                 }
             )
         }
-    ) {
+    ) { scaffoldPadding ->
         ContentSurface {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(scaffoldPadding),
                 verticalArrangement = Arrangement.Center,
             ) {
                 when (mode) {

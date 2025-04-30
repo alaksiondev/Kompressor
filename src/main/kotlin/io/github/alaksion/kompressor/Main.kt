@@ -17,6 +17,7 @@ import io.github.alaksion.kompressor.domain.params.Presets
 import io.github.alaksion.kompressor.domain.params.Resolution
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.app_name
+import io.github.alaksion.kompressor.kompressor.generated.resources.logo
 import io.github.alaksion.kompressor.presentation.navigation.Screens
 import io.github.alaksion.kompressor.presentation.navigation.navtypes.CodecsNavType
 import io.github.alaksion.kompressor.presentation.navigation.navtypes.PresetsNavType
@@ -31,6 +32,7 @@ import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOut
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputViewModel
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import kotlinx.coroutines.Dispatchers
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import kotlin.reflect.typeOf
 
@@ -42,7 +44,8 @@ fun main() = application {
         title = stringResource(Res.string.app_name),
         state = rememberWindowState(
             size = DpSize(600.dp, 750.dp)
-        )
+        ),
+        icon = painterResource(Res.drawable.logo)
     ) {
         val navigator = rememberNavController()
         KompressorTheme {
