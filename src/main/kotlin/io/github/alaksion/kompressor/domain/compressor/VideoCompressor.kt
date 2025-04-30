@@ -3,7 +3,7 @@ package io.github.alaksion.kompressor.domain.compressor
 import io.github.alaksion.kompressor.domain.params.Codecs
 import io.github.alaksion.kompressor.domain.params.Presets
 import io.github.alaksion.kompressor.domain.params.Resolution
-import kotlinx.coroutines.CoroutineDispatcher
+import io.github.alaksion.kompressor.domain.process.ProcessHandler
 import kotlinx.coroutines.flow.Flow
 
 interface VideoCompressor {
@@ -27,7 +27,9 @@ interface VideoCompressor {
     ): Flow<ProcessMessage>
 
     companion object {
-        fun getInstance(): VideoCompressor = FfmpegVideoCompressor()
+        fun getInstance(): VideoCompressor = FfmpegVideoCompressor(
+            processHandler = ProcessHandler.instance
+        )
     }
 }
 

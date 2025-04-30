@@ -3,11 +3,15 @@ package io.github.alaksion.kompressor.domain.compressor
 import io.github.alaksion.kompressor.domain.params.Codecs
 import io.github.alaksion.kompressor.domain.params.Presets
 import io.github.alaksion.kompressor.domain.params.Resolution
+import io.github.alaksion.kompressor.domain.process.ProcessHandler
+import io.github.alaksion.kompressor.domain.process.ProcessType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlin.io.path.Path
 
-internal class FfmpegVideoCompressor : VideoCompressor {
+internal class FfmpegVideoCompressor(
+    private val processHandler: ProcessHandler
+) : VideoCompressor {
 
     override suspend fun compress(
         inputPath: String,
@@ -21,19 +25,19 @@ internal class FfmpegVideoCompressor : VideoCompressor {
 
         val scriptPath = Path("").toAbsolutePath().toString() + "/python/video_compressor.py"
 
-        val process = ProcessBuilder(
-            "python3",
-            scriptPath,
-            inputPath,
-            outputPath,
-            "--codec", codecs.id,
-            "--crf", crf.toString(),
-            "--preset", presets.id,
-            "--scale", "${resolution.width}:${resolution.height}"
-        ).redirectErrorStream(true).start()
-
         return flow {
-            val exitCode = process.waitFor()
+            val exitCode = processHandler.execute(
+                process = ProcessType.Python,
+                command = listOf(
+                    scriptPath,
+                    inputPath,
+                    outputPath,
+                    "--codec", codecs.id,
+                    "--crf", crf.toString(),
+                    "--preset", presets.id,
+                    "--scale", "${resolution.width}:${resolution.height}"
+                )
+            )
             println("exitCode: $exitCode")
 
             if (exitCode != 0) {
