@@ -24,9 +24,9 @@ internal class SetupViewModel(
             isLoading.update { true }
             val pythonEnabled = checkPython()
             val ffmpegEnabled = checkFfmpeg()
-            dependenciesEnabled.update { pythonEnabled && ffmpegEnabled }
             delay(500.milliseconds)
             isLoading.update { false }
+            dependenciesEnabled.update { pythonEnabled && ffmpegEnabled }
         }
     }
 
@@ -34,13 +34,20 @@ internal class SetupViewModel(
         return processHandler.execute(
             process = ProcessType.Python,
             command = "--version"
-        ) == 0
+        ).code == 0
     }
 
     private suspend fun checkFfmpeg(): Boolean {
-        return processHandler.execute(
+        "-version | sed -n \"s/ffmpeg version \\([-0-9.]*\\).*/\\1/p;\""
+
+        val output = processHandler.execute(
             process = ProcessType.Ffmpeg,
-            command = "-version | sed -n \"s/ffmpeg version \\([-0-9.]*\\).*/\\1/p;\""
-        ) == 0
+            command = listOf()
+        ).output
+
+        val regex = Regex("""ffmpeg version ([\d\.\-]+)""")
+        val version = regex.find(output)?.groupValues?.get(1).orEmpty()
+
+        return version.isNotEmpty()
     }
 }

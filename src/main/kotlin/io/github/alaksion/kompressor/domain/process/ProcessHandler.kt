@@ -1,5 +1,6 @@
 package io.github.alaksion.kompressor.domain.process
 
+import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
@@ -7,12 +8,12 @@ internal interface ProcessHandler {
     suspend fun execute(
         process: ProcessType,
         command: List<String>,
-    ): Int
+    ): ProcessResult
 
     suspend fun execute(
         process: ProcessType,
         command: String,
-    ): Int
+    ): ProcessResult
 
     companion object {
         val instance: ProcessHandler = ProcessHandlerImpl()
@@ -29,7 +30,7 @@ internal class ProcessHandlerImpl : ProcessHandler {
     override suspend fun execute(
         process: ProcessType,
         command: List<String>,
-    ): Int {
+    ): ProcessResult {
         return suspendCoroutine { continuation ->
             runCatching {
                 val fullCommand = listOf(
@@ -37,12 +38,18 @@ internal class ProcessHandlerImpl : ProcessHandler {
                     *command.toTypedArray()
                 )
 
-                val builder = ProcessBuilder(fullCommand).redirectErrorStream(true).start()
-
-                builder.waitFor()
+                val result = ProcessBuilder(fullCommand).redirectErrorStream(true).start()
+                val output = result.inputStream.bufferedReader().readText()
+                val exitCode = result.waitFor()
+                Pair(exitCode, output)
             }.fold(
                 onSuccess = {
-                    it
+                    continuation.resume(
+                        ProcessResult(
+                            code = it.first,
+                            output = it.second
+                        )
+                    )
                 },
                 onFailure = { error ->
                     continuation.resumeWithException(error)
@@ -54,7 +61,12 @@ internal class ProcessHandlerImpl : ProcessHandler {
     override suspend fun execute(
         process: ProcessType,
         command: String
-    ): Int {
+    ): ProcessResult {
         return execute(process = process, command = listOf(command))
     }
 }
+
+internal data class ProcessResult(
+    val code: Int,
+    val output: String,
+)

@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,14 @@ internal fun SetupScreen(
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val isDependenciesEnabled by viewModel.dependenciesEnabled.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) { viewModel.checkDependencies() }
+
+    LaunchedEffect(isDependenciesEnabled) {
+        if (isDependenciesEnabled) {
+            onSetupSuccess()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -32,7 +41,7 @@ internal fun SetupScreen(
             )
         },
         bottomBar = {
-            if (isLoading.not() || isDependenciesEnabled.not()) {
+            if (isLoading.not() && isDependenciesEnabled.not()) {
                 Footer(
                     label = "Exit",
                     isActive = true,

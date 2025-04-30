@@ -40,7 +40,7 @@ internal class FfmpegVideoCompressor(
             )
             println("exitCode: $exitCode")
 
-            if (exitCode != 0) {
+            if (exitCode.code != 0) {
                 emit(ProcessMessage.Failure)
             } else {
                 emit(ProcessMessage.Success)

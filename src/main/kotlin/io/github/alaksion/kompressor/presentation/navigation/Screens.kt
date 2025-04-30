@@ -6,6 +6,10 @@ import io.github.alaksion.kompressor.domain.params.Resolution
 import kotlinx.serialization.Serializable
 
 sealed interface Screens {
+
+    @Serializable
+    object Setup: Screens
+
     @Serializable
     object SelectFile : Screens
 

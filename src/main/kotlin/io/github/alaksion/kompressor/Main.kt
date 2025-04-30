@@ -15,6 +15,7 @@ import io.github.alaksion.kompressor.domain.params.Codecs
 import io.github.alaksion.kompressor.domain.params.CompressionParams
 import io.github.alaksion.kompressor.domain.params.Presets
 import io.github.alaksion.kompressor.domain.params.Resolution
+import io.github.alaksion.kompressor.domain.process.ProcessHandler
 import io.github.alaksion.kompressor.kompressor.generated.resources.Res
 import io.github.alaksion.kompressor.kompressor.generated.resources.app_name
 import io.github.alaksion.kompressor.kompressor.generated.resources.logo
@@ -30,6 +31,8 @@ import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileS
 import io.github.alaksion.kompressor.presentation.screens.selectfile.SelectFileViewModel
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputScreen
 import io.github.alaksion.kompressor.presentation.screens.selectoutput.SelectOutputViewModel
+import io.github.alaksion.kompressor.presentation.screens.setup.SetupScreen
+import io.github.alaksion.kompressor.presentation.screens.setup.SetupViewModel
 import io.github.alaksion.kompressor.presentation.theme.KompressorTheme
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.compose.resources.painterResource
@@ -51,7 +54,7 @@ fun main() = application {
         KompressorTheme {
             NavHost(
                 navController = navigator,
-                startDestination = Screens.SelectFile,
+                startDestination = Screens.Setup,
             ) {
                 composable<Screens.SelectFile> { backStackEntry ->
                     SelectFileScreen(
@@ -82,7 +85,11 @@ fun main() = application {
                             outputPath = args.outputPath,
                         ),
                         onExit = {
-                            navigator.clearBackStack(route = Screens.SelectFile)
+                            navigator.navigate(Screens.SelectFile) {
+                                popUpTo(Screens.ProcessingFile) {
+                                    inclusive = true
+                                }
+                            }
                         },
                         viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
                             ProcessingVideoViewModel(
@@ -140,6 +147,25 @@ fun main() = application {
                         onBack = { navigator.popBackStack() },
                         viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
                             CompressionParamsViewModel()
+                        }
+                    )
+                }
+
+                composable<Screens.Setup> { backStackEntry ->
+                    SetupScreen(
+                        onSetupSuccess = {
+                            navigator.navigate(Screens.SelectFile) {
+                                popUpTo(Screens.Setup) {
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        onExit = { exitApplication() },
+                        viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
+                            SetupViewModel(
+                                processHandler = ProcessHandler.instance,
+                                dispatcher = Dispatchers.IO
+                            )
                         }
                     )
                 }
