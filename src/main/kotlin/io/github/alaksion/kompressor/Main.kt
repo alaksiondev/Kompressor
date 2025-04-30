@@ -90,7 +90,6 @@ fun main() = application {
                                     inclusive = true
                                 }
                             }
-                            println(navigator.currentBackStack.value)
                         },
                         viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
                             ProcessingVideoViewModel(
