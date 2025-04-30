@@ -86,10 +86,11 @@ fun main() = application {
                         ),
                         onExit = {
                             navigator.navigate(Screens.SelectFile) {
-                                popUpTo(Screens.ProcessingFile) {
+                                popUpTo(navigator.graph.id) {
                                     inclusive = true
                                 }
                             }
+                            println(navigator.currentBackStack.value)
                         },
                         viewModel = viewModel(viewModelStoreOwner = backStackEntry) {
                             ProcessingVideoViewModel(
