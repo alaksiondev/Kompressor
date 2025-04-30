@@ -78,11 +78,13 @@ internal fun SelectFileScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar {
-                Text(
-                    text = stringResource(Res.string.select_file_title),
-                )
-            }
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(Res.string.select_file_title),
+                    )
+                }
+            )
         },
         bottomBar = {
             Footer(

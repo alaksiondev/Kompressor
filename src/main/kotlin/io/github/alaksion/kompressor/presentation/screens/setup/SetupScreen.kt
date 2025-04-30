@@ -10,10 +10,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.alaksion.kompressor.kompressor.generated.resources.Res
+import io.github.alaksion.kompressor.kompressor.generated.resources.setup_title
 import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
 import io.github.alaksion.kompressor.presentation.screens.setup.components.MissingDependencyState
 import io.github.alaksion.kompressor.presentation.screens.setup.components.SetupLoadingState
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun SetupScreen(
@@ -35,7 +38,7 @@ internal fun SetupScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Kompressor") }
+                title = { Text(stringResource(Res.string.setup_title)) }
             )
         },
         bottomBar = {

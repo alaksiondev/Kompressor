@@ -48,6 +48,7 @@
     <string name="compression_success_filename">File name</string>
 
     <!-- Setup screen -->
+    <string name="setup_title">Kompressor setup</string>
     <string name="setup_failed_title">Could not initialize dependencies</string>
     <string name="python">Python</string>
     <string name="python_description">Python is essential to configure the environment for Kompressor</string>"
