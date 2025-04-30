@@ -14,19 +14,21 @@ import io.github.alaksion.kompressor.kompressor.generated.resources.*
 import org.jetbrains.compose.resources.Font
 
 private val colors = lightColors(
-    primary = Color(0xFF6200EE),       // Roxo Material Design padrão
-    primaryVariant = Color(0xFF3700B3),
-    secondary = Color(0xFF03DAC6),
-    secondaryVariant = Color(0xFF018786),
-    background = Color(0xFFFAFAFA),    // Sua cor de fundo desejada
-    surface = Color(0xFFFFFFFF),
-    error = Color(0xFFB00020),
-    onPrimary = Color(0xFFFFFFFF),
-    onSecondary = Color(0xFF000000),
-    onBackground = Color(0xFF000000),
-    onSurface = Color(0xFF000000),
-    onError = Color(0xFFFFFFFF)
+    primary = Color(0xFF1F1F1F),           // Preto Uber moderno
+    primaryVariant = Color(0xFF000000),     // Preto puro
+    secondary = Color(0xFFFF6D00),          // Laranja Kotlin vibrante
+    secondaryVariant = Color(0xFFDD4B00),   // Laranja escuro
+    background = Color(0xFFFFFFFF),         // Branco limpo
+    surface = Color(0xFFF5F5F5),            // Cinza claro suave
+    error = Color(0xFFB00020),              // Padrão Material para erro
+
+    onPrimary = Color.White,                // Texto branco sobre preto
+    onSecondary = Color.Black,              // Texto preto sobre laranja
+    onBackground = Color.Black,             // Texto padrão sobre fundo branco
+    onSurface = Color.Black,                // Texto sobre superfícies cinza
+    onError = Color.White                   // Texto branco sobre fundo de erro
 )
+
 
 private val fontFamily: FontFamily
     @Composable
