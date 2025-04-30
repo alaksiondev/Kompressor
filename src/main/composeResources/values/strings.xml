@@ -47,4 +47,14 @@
     <string name="compression_success_cta">Open folder</string>
     <string name="compression_success_filename">File name</string>
 
+    <!-- Setup screen -->
+    <string name="setup_failed_title">Could not initialize dependencies</string>
+    <string name="python">Python</string>
+    <string name="python_description">Python is essential to configure the environment for Kompressor</string>"
+    <string name="ffmpeg">Ffmpeg</string>
+    <string name="ffmpeg_description">Ffmpeg is the compression engine used by Kompressor</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="download">Download</string>
+
 </resources>

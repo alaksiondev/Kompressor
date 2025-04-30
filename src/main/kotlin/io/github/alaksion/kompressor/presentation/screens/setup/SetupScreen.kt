@@ -1,9 +1,6 @@
 package io.github.alaksion.kompressor.presentation.screens.setup
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -15,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.alaksion.kompressor.presentation.components.ContentSurface
 import io.github.alaksion.kompressor.presentation.components.Footer
+import io.github.alaksion.kompressor.presentation.screens.setup.components.MissingDependencyState
 import io.github.alaksion.kompressor.presentation.screens.setup.components.SetupLoadingState
 
 @Composable
@@ -24,12 +22,12 @@ internal fun SetupScreen(
     viewModel: SetupViewModel
 ) {
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-    val isDependenciesEnabled by viewModel.dependenciesEnabled.collectAsStateWithLifecycle()
+    val dependencyState by viewModel.dependenciesEnabled.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) { viewModel.checkDependencies() }
 
-    LaunchedEffect(isDependenciesEnabled) {
-        if (isDependenciesEnabled) {
+    LaunchedEffect(dependencyState) {
+        if (dependencyState is DependencyState.Available) {
             onSetupSuccess()
         }
     }
@@ -41,7 +39,7 @@ internal fun SetupScreen(
             )
         },
         bottomBar = {
-            if (isLoading.not() && isDependenciesEnabled.not()) {
+            if (isLoading.not() && dependencyState !is DependencyState.Available) {
                 Footer(
                     label = "Exit",
                     isActive = true,
@@ -56,9 +54,18 @@ internal fun SetupScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                when {
-                    isLoading -> SetupLoadingState()
-                    isDependenciesEnabled.not() -> Text("error")
+                if (isLoading) {
+                    SetupLoadingState()
+                } else {
+                    when (val dependency = dependencyState) {
+                        DependencyState.Available -> Unit
+
+                        is DependencyState.Partial -> MissingDependencyState(
+                            modifier = Modifier.fillMaxWidth(),
+                            pythonEnabled = dependency.pythonEnabled,
+                            ffmpegEnabled = dependency.ffmpegEnabled,
+                        )
+                    }
                 }
             }
         }

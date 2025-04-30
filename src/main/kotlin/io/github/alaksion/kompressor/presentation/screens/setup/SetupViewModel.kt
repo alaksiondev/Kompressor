@@ -16,7 +16,7 @@ internal class SetupViewModel(
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    val dependenciesEnabled = MutableStateFlow(false)
+    val dependenciesEnabled = MutableStateFlow<DependencyState>(DependencyState.Partial(false, false))
     val isLoading = MutableStateFlow(false)
 
     fun checkDependencies() {
@@ -26,7 +26,13 @@ internal class SetupViewModel(
             val ffmpegEnabled = checkFfmpeg()
             delay(500.milliseconds)
             isLoading.update { false }
-            dependenciesEnabled.update { pythonEnabled && ffmpegEnabled }
+            dependenciesEnabled.update {
+                if (pythonEnabled && ffmpegEnabled) {
+                    DependencyState.Available
+                } else {
+                    DependencyState.Partial(pythonEnabled, ffmpegEnabled)
+                }
+            }
         }
     }
 
@@ -50,4 +56,9 @@ internal class SetupViewModel(
 
         return version.isNotEmpty()
     }
+}
+
+internal sealed interface DependencyState {
+    data object Available : DependencyState
+    data class Partial(val pythonEnabled: Boolean, val ffmpegEnabled: Boolean) : DependencyState
 }
