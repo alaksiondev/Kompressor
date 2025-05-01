@@ -14,8 +14,9 @@ internal class SelectOutputViewModel : ViewModel() {
 
     fun setOutputPath(path: String, inputFileName: String) {
         val newPath = if (path.isNotBlank()) {
-            val inputNameSplit = inputFileName.split(".")
-            val outputFileName = inputNameSplit[0] + "_compressed" + ".${inputNameSplit[1]}"
+            val pureFileName = inputFileName.substringBeforeLast(".")
+            val fileExtension = inputFileName.substringAfterLast(".")
+            val outputFileName = pureFileName + "_compressed" + ".${fileExtension}"
             "${path}/${outputFileName}"
         } else {
             ""
