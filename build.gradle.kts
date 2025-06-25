@@ -1,5 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-
 plugins {
     alias(libs.plugins.jetbrains.kotlin)
     alias(libs.plugins.jetbrains.compose.kotlin)
@@ -9,7 +7,7 @@ plugins {
 }
 
 group = "io.github.alaksion.kompressor"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -34,11 +32,5 @@ dependencies {
 compose.desktop {
     application {
         mainClass = "MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "Kompressor"
-            packageVersion = "1.0.0"
-        }
     }
 }
