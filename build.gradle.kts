@@ -31,6 +31,6 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "io.github.alaksion.kompressor.MainKt"
     }
 }
