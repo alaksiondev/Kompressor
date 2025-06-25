@@ -5,6 +5,8 @@ navigation = "2.8.0-alpha10"
 serialization = "1.8.1"
 coroutines = "1.10.2"
 viewmodel = "2.8.2"
+conveyor-plugin = "1.12"
+conveyor-control = "1.1"
 
 [libraries]
 
@@ -16,10 +18,14 @@ compose-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewm
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 
+# Conveyor
+conveyor-controll = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref = "conveyor-control" }
+
 [plugins]
 jetbrains-kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 jetbrains-compose-core = { id = "org.jetbrains.compose", version.ref = "compose" }
 jetbrains-compose-kotlin = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor-plugin" }
 
 [bundles]

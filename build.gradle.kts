@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrains.compose.kotlin)
     alias(libs.plugins.jetbrains.compose.core)
     alias(libs.plugins.jetbrains.serialization)
+    alias(libs.plugins.conveyor)
 }
 
 group = "io.github.alaksion.kompressor"
@@ -21,6 +22,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(compose.materialIconsExtended)
     implementation(compose.components.resources)
+    implementation(libs.conveyor.controll)
 
     // Libs
     implementation(libs.compose.navigation)
